@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>changepsw</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<style>
+			html,body {
+				background-color: #efeff4;
+			}
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">change password</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>old psw</label>
+					<input id="oldpsw" type="password" class="mui-input-clear mui-input" placeholder="enter old password" />
+				</div>
+				<div class="mui-input-row">
+					<label>new psw</label>
+					<input id="newpsw" type="password" class="mui-input-clear mui-input" placeholder="enter new password" />
+				</div>
+				<div class="mui-input-row">
+					<label>confirm</label>
+					<input id="psw_confirm" type="password" class="mui-input-clear mui-input" placeholder="confirm new password" />
+				</div>
+			</form>	
+			<div class="mui-content-padded">
+				<button id="alter_psw" class=" mui-table-view-cell mui-btn mui-btn-block mui-btn-primary" style="margin-top: 25px;">submit</button>
+			</div>
+		</div>
+
+		</div>
+		<script src="../js/app.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script>
+			(function($,doc){
+				mui.init();
+				mui.plusReady(function(){
+					var oldpsw = doc.getElementById("oldpsw");
+					var newpsw = doc.getElementById("newpsw");
+					var psw_confirm = doc.getElementById("psw_confirm");
+					var alter_psw_button = doc.getElementById("alter_psw");
+					
+					alter_psw_button.addEventListener('tap',function(event){
+						if(oldpsw.value==""){
+							plus.nativeUI.toast("enter old password")
+						}else if(newpsw.value==""){
+							plus.nativeUI.toast("enter new password")
+						}else if(psw_confirm.value==""){
+							plus.nativeUI.toast("confirm new password")
+						}else if(newpsw.value != psw_confirm.value){
+							plus.nativeUI.toast("new psw is inconsistent with confirm psw")
+						}else{
+							$.ajax({
+								type:"put",
+								url:basepath+"api/v1.0/user/psw/change",
+								data:{
+									"access_token":localStorage.getItem("token"),
+									"job_no":localStorage.getItem("job_no"),
+									"oldpsw":oldpsw.value,
+									"newpsw":newpsw.value,
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+									if(data.response.success=="1"){
+                                   		plus.nativeUI.toast("succeed");	
+                                   		mui.back();
+									}else{
+										plus.nativeUI.toast(data.response.return_code)
+									}
+								},
+								error:function(){
+									plus.nativeUI.toast("server error！");
+								}
+							});
+						}
+					});
+					
+				});
+				
+			})(mui,document)
+		</script>
+	</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>selfsetting</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<style>
+			html,body {
+				background-color: #efeff4;
+			}
+			.mui-content{
+				margin: -12px 0px 0px 0px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">self-setting</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell">
+					<a id="changepsw" class="mui-navigate-right">
+						change password
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="tel" class="mui-navigate-right">
+						server telephone
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="about_ZhihuiSMB" class="mui-navigate-right">
+						about ZhihuiSMB 
+					</a>
+				</li>
+				
+			</ul>
+		</div>	
+	</body>
+	
+	<script type="text/javascript" src="../js/mui.min.js" ></script>
+	<script>
+	    mui.init();
+	    
+		mui.plusReady(function(){
+			
+//			修改密码
+			document.getElementById("changepsw").addEventListener('tap',function(){
+				mui.openWindow({
+					url:"changepsw.html",
+					id:"changpsw",
+				})
+			})
+			//客服电话
+			document.getElementById("tel").addEventListener('tap', function() {
+			   plus.device.dial("18752036998");
+			});
+			
+			//关于ZhihuiSMB app
+			document.getElementById("about_ZhihuiSMB").addEventListener('tap',function(){
+				mui.openWindow({
+					url:"about_ZhihuiSMB.html",
+					id:"about_ZhihuiSMB",
+				})
+			})
+		})
+	</script>
+</html>

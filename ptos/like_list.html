@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ptoslike</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color:#efeff4;
+			}
+		    .mui-table-view-cell{
+		    	border-radius: 10px;
+		    	margin-left: 10px;
+		    	margin-right: 10px;
+		    	background-color:#D8D8D8;
+		    	margin-bottom: 10px;
+		    }
+		    
+		</style>
+    </head>
+	<body>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron" id="list">
+					
+				</ul>
+			</div>
+		</div>
+	
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script type="text/javascript" src="../js/basepath.js" ></script>
+	<script type="text/javascript" src="../js/copy.js" ></script>
+	<script>
+		(function($,doc){
+			mui.init({
+				gestureConfig:{
+					   tap: true, //默认为true
+					   longtap: true, //默认为false
+					  }
+			})
+			
+			$.plusReady(function(){
+				mui.ajax({
+				type: "get",//后面必须加逗号！！！！！！！！
+				url: basepath+"api/v1.0/like/list?access_token="+localStorage.getItem("token")+"&user_id="+localStorage.getItem("job_no"),
+				async:true,
+				dataType:"json",
+				success:function(data){
+					ptos_like = data.response.data.ptos_like_detail
+					if(ptos_like==""){
+						plus.nativeUI.toast("no like problems")
+						mui.back()
+					}
+					mui.each(ptos_like,function(key,value){
+					var li = document.createElement("li")
+					li.className="mui-table-view-cell"
+					 li.setAttribute("ptos_id",value._id);
+						li.setAttribute("editor_id",value.add_user_id);
+						li.setAttribute("editor_jobno",value.add_user_jobno);
+						li.setAttribute("editor_name",value.add_user_name);
+						li.setAttribute("add_time",value.add_time);
+						li.setAttribute("ptos_title",value.title);
+						li.setAttribute("ptos_to_no",value.to_no);
+						li.setAttribute("ptos_to_name",value.to_name);
+						li.setAttribute("ptos_images",value.images)
+						li.setAttribute("ptos_context",value.context)
+						li.setAttribute("ptos_category",value.category)
+						li.setAttribute("ptos_result",value.result)
+						li.innerHTML = "editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
+									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+						var read_text="editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
+									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+						var icon = document.createElement("icon")
+                        list.appendChild(li)
+                        li.setAttribute("li_text",read_text) 
+					
+					})
+					
+					mui("#list").on('tap','li',function(){
+						var ptos_id = this.getAttribute("ptos_id")
+						var editor_id = this.getAttribute("editor_id")
+						var editor_name = this.getAttribute("editor_name")
+						var editor_jobno = this.getAttribute("editor_jobno")
+						var add_time = this.getAttribute("add_time")
+						var except_time = this.getAttribute("except_time")
+						var ptos_title = this.getAttribute("ptos_title")
+						var ptos_to_no = this.getAttribute("ptos_to_no")
+						var ptos_to_name = this.getAttribute("ptos_to_name")
+						var ptos_images = this.getAttribute("ptos_images")
+						var ptos_context = this.getAttribute("ptos_context")
+						var ptos_category = this.getAttribute("ptos_category")
+						var ptos_result= this.getAttribute("ptos_result")
+						var li_text = this.getAttribute("li_text")
+						
+						mui.openWindow({
+					    url:"ptos_detail.html",
+					    id:"ptos_detail",
+					    
+					    extras:{
+					    	ptos_id:ptos_id,
+					    	editor_id:editor_id,
+					    	editor_name:editor_name,
+					    	editor_jobno:editor_jobno,
+					    	add_time:add_time,
+					    	except_time:except_time,
+					    	ptos_title:ptos_title,
+					    	ptos_to_no:ptos_to_no,
+					    	ptos_to_name:ptos_to_name,
+					    	ptos_images:ptos_images,
+					    	ptos_context:ptos_context,
+					    	ptos_category :ptos_category,
+					    	ptos_result:ptos_result,
+					    }
+					     
+						})
+						this.innerHTML=li_text;//点击查看详情即为已读
+						
+						$.ajax({
+							type: "PUT",
+							url:basepath +"api/v1.0/msgunread/minus",
+							data:{
+								"access_token":localStorage.getItem("token"),
+								"user_id":localStorage.getItem("job_no"),
+								"type":"ptos",
+								"msg_id":ptos_id,
+								
+							},
+							async: true,
+							dataType:"json",
+							success: function(data) {
+							},
+							error: function() {
+								plus.nativeUI.toast("请求服务器出现失败!");
+							}
+						});
+	                  });
+		                  
+		                //长按复制  
+		                mui("#list").on("longtap","li",function(){
+	                 	inforgather_text = this.getAttribute("inforgather_text")
+	                 	copy(inforgather_text)
+	                 	var btnArray = ['否','是'];
+	                 })
+		   		        },
+				  
+				        });	
+			});
+		}(mui,document))
+		</script>
+
+  </body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>informationGuiding</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color:#efeff4;
+			}
+		    
+		    .mui-table-view-cell{
+		    	border-radius: 10px;
+		    	margin-left: 10px;
+		    	margin-right: 10px;
+		    	background-color:#D8D8D8;
+		    	margin-bottom: 10px;
+		    	margin-top: 10px;
+		    }
+		</style>
+    </head>
+	<body>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<ul class="mui-table-view mui-table-view-chevron" id="list">
+					
+				</ul>
+			</div>
+		</div>
+	
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script type="text/javascript" src="../js/basepath.js" ></script>
+	<script type="text/javascript" src="../js/copy.js" ></script>
+	<script>
+		(function($,doc){
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down:{
+						callback:pulldownRefresh
+					},
+					up: {
+						contentrefresh: 'loading...',
+						callback: pullupRefresh
+					}
+				},
+				
+				gestureConfig:{
+					   tap: true, //默认为true
+					   longtap: true, //默认为false
+					  }
+			});
+			
+			var list = document.getElementById("list")	
+			var count = -1;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				count = count +1
+				setTimeout(function() {
+					
+					mui.ajax({
+					type: "get",//后面必须加逗号！！！！！！！！
+					url: basepath+"api/v1.0/inforshare?access_token="+localStorage.getItem("token")+"&infor_type^="+localStorage.getItem("infor_type")+"&page_size=10&page="+(count+1),
+					async:true,
+					dataType:"json",
+					success:function(data){
+						
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.response.data ==""||null));	
+						unread_msg = data.response.unread.inforshare_unread
+						mui.each(data.response.data,function(key,value){
+//						alert(JSON.stringify(value))
+						var li = document.createElement("li")
+						li.className = "mui-table-view-cell"
+						li.setAttribute("infor_id",value._id);
+						li.setAttribute("infor_editor",value.add_user_jobno)
+						li.setAttribute("infor_name",value.add_user_name)
+						li.setAttribute("infor_title",value.infor_title)
+						li.setAttribute("infor_type",value.infor_type)
+						li.setAttribute("infor_text",value.infor_text)
+						li.setAttribute("infor_time",value.last_updated_time)
+						li.setAttribute("images_list",value.images)
+						li.setAttribute("filename",value.filename);
+						li.setAttribute("filepath",value.filepath);
+						if(unread_msg.indexOf(value._id)>=0){
+							li.innerHTML='<span class="unread"></span>'+"editor："+value.add_user_name +"<br>"+"add time："+value.last_updated_time+"<br>" +"title："+value.infor_title;
+                         
+						}else{
+							li.innerHTML="editor："+value.add_user_name +"<br>"+"add time："+value.last_updated_time+"<br>" +"title："+value.infor_title;
+                         
+						}
+						var read_text="editor："+value.add_user_name +"<br>"+"add time："+value.last_updated_time+"<br>" +"title："+value.infor_title;
+                        list.appendChild(li)
+                        li.setAttribute("li_text",read_text)       
+                       
+					})
+					mui("#list").on('tap','li',function(){
+						var infor_id = this.getAttribute("infor_id")
+						var infor_editor = this.getAttribute("infor_editor")
+						var infor_name = this.getAttribute("infor_name")
+						var infor_title = this.getAttribute("infor_title")
+						var infor_type = this.getAttribute("infor_type")
+						var infor_text = this.getAttribute("infor_text")
+						var infor_time = this.getAttribute("infor_time")
+						var images_list = this.getAttribute("images_list")
+						var filename = this.getAttribute("filename")
+						var filepath = this.getAttribute("filepath")
+						var li_text = this.getAttribute("li_text")
+						mui.openWindow({
+					    url:"infor_detail.html",
+					    id:"infor_detail",
+					    
+					    extras:{
+					    	infor_id:infor_id,
+					    	infor_editor:infor_editor,
+					    	infor_name:infor_name,
+					    	infor_title:infor_title,
+					    	infor_type:infor_type,
+					    	infor_text:infor_text,
+					    	infor_time:infor_time,
+					    	images_list:images_list,
+					    	filename:filename,
+					    	filepath:filepath,
+					    }
+					     
+						})
+						this.innerHTML=li_text;//点击查看详情即为已读
+						
+						$.ajax({
+							type: "PUT",
+							url:basepath +"api/v1.0/msgunread/minus",
+							data:{
+								"access_token":localStorage.getItem("token"),
+								"user_id":localStorage.getItem("job_no"),
+								"type":"inforshare",
+								"msg_id":infor_id,
+								
+							},
+							async: true,
+							dataType:"json",
+							success: function(data) {
+							},
+							error: function() {
+								plus.nativeUI.toast("server error!");
+							}
+						});
+	                  });
+		                  
+	                //长按复制  
+//	                mui("#list").on("longtap","li",function(){
+//	                	if("admin"!=localStorage.getItem("scope")){
+//	                 	inforguide_text = this.getAttribute("inforguide_text")
+//	                 	copy(inforguide_text)
+//	                 	var btnArray = ['否','是'];
+//	                 }
+//	                 })
+		             //长按删除（管理员）
+	                 mui("#list").on("longtap","li",function(){
+	                 	infor_id = this.getAttribute("infor_id")
+	                 	if("admin"==localStorage.getItem("scope")){
+	                 		mui.confirm("是否删除该记录？","",["取消","删除"],function(e){
+							if(e.index==1){
+								mui.ajax({
+								type:"delete",
+								url:basepath+"api/v1.0/inforshare/"+infor_id+"?access_token="+localStorage.getItem("token"),
+								data:{
+									
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+									if(data.response.success =="1")
+									{
+										plus.nativeUI.toast("已删除该记录")
+										plus.webview.currentWebview().reload()
+									}else{
+										plus.nativeUI.toast("删除失败，请重试！")
+									}
+								},
+								error:function(){
+									plus.nativeUI.toast("请求服务器失败!");
+								}
+							})
+								
+							}
+						})
+	                 	}
+	                 })    
+		                
+		   		        },
+				  
+				        });	
+				}, 100);
+				
+			}
+			/*
+			 下拉刷新(以从新加载本页的方法来实现)
+			 * */
+			function pulldownRefresh(){
+			   mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+               plus.webview.currentWebview().reload();
+			}
+			
+			
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 100);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+			
+		}(mui,document))
+		</script>
+
+  </body>
+</html>

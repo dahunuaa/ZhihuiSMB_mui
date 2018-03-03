@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" class="picture">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>news</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/picture.css" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			ul {
+				font-size: 14px;
+				color: #8f8f94;
+			}
+			li{
+				list-style-type:none;/*去掉li前面的小黑点*/
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+		</style>
+
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">new information </h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>title</label>
+					<input id="title" type="text" class="mui-input-clear" placeholder="enter information title">
+				</div>
+				<li class="mui-table-view-cell">
+					<a id="selectcategory" class="mui-navigate-right">
+						category<span id="category"style="padding: 0px 0px 0px 45px;"></span>
+					</a>
+			    </li>
+			    </form>
+				<br>
+				<label>&nbsp;&nbsp;&nbsp;description</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<div class="mui-input-row" style="margin: 10px 5px;">
+					<textarea id="textarea" rows="5" placeholder="enter description"></textarea>
+				</div>	
+				<br>
+				<form id="uploadForm" style="margin-top: -15px;">
+					<label>&nbsp;&nbsp;&nbsp;upload file（optional）</label>
+					<br/>
+					<input type="file" name="file" id="file_up"  style="margin-top: 10px; margin-left: 12px; "/>
+					<br/>
+					<button id="cancel_file"  type="button"style="margin-top: 10px; margin-left: 12px; height: 30px; width: 85px; background-color:skyblue">cancel</button>
+				</form>
+				<br />
+				<div>
+					<label>&nbsp;&nbsp;&nbsp;upload images（optional）</label>
+					<br />
+					<div id="image-list" class="row image-list" style="height: 80px">
+				</div>
+				<br/>          
+				<div class="mui-button-row">
+					<button id="newinfor_submit" class="mui-btn mui-btn-primary" type="button" onclick="return true;">submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<button id="newinfor_cancel" class="mui-btn mui-btn-danger" type="button" onclick="return false;">cancel</button>
+				</div>
+				<br />
+				<br />
+		</div>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/add_picture.js"></script>
+		<script src="../js/app.js"></script>
+		<script type="text/javascript" src="../js/mui.picker.min.js" ></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script>
+		(function($, doc) {
+				$.init();
+				$.ready(function() {
+					
+					var selectcategory = new $.PopPicker();
+					selectcategory.setData([{
+						value: 'machine design',
+						text: 'machine design'
+					},{
+						value: 'machine assembly',
+						text: 'machine assembly'
+					},{
+						value: 'project',
+						text: 'project'
+					},{
+						value: 'creo',
+						text: 'creo'
+					},{
+						value: 'sap&windchill',
+						text: 'sap&windchill'
+					},{
+						value: 'others',
+						text: 'others'
+					}]);
+					var showUserPickerButton = doc.getElementById('selectcategory');
+					var category = doc.getElementById('category');
+					showUserPickerButton.addEventListener('tap', function(event) {
+						selectcategory.show(function(items) {
+							category.innerText = items[0].text;
+							//返回 false 可以阻止选择框的关闭
+//							return false;
+						});
+					}, false);
+					
+			    
+			        var titleBox = doc.getElementById('title');
+					var textareaBox = doc.getElementById('textarea');
+					var newinfor_submitButton = doc.getElementById("newinfor_submit");
+					var newinfor_cancelButton = doc.getElementById('newinfor_cancel');
+					
+					document.getElementById("cancel_file").addEventListener('tap',function(e){
+		          		var obj= document.getElementById("file_up");
+		          		obj.outerHTML = obj.outerHTML
+					})
+					
+					newinfor_submitButton.addEventListener('tap', function(event) {
+						
+						if(titleBox.value==""){
+							plus.nativeUI.toast("enter title")
+						}else if(category.innerText==""){
+							plus.nativeUI.toast("select category")
+						}else if(textareaBox.value==""){
+							plus.nativeUI.toast("enter description")
+						}else{
+							//必须把下面两行代码放在这儿 如果放在刚开始不行
+							var  file = document.getElementById("file_up").files[0];
+							var formData = new FormData($("#uploadForm")[0]);
+							formData.append("access_token",localStorage.getItem("token"))//上传的formData可以添加json数组，下面的另一个ajax完全可以直接添加进来
+							var wt  = plus.nativeUI.showWaiting("loading...");
+							if(file !=""&&file !=undefined){
+								origin_name=file.name
+								$.ajax({
+								type:"post",
+								url:basepath+"api/v1.0/file/upload",
+								data:formData,
+								async: false,//想把data值赋给一个全局变量 然后给下一个ajax里面用，必须将此处改为false，应为js是非阻塞的，会同时执行多个ajax
+//								cache:false,
+								contentType:false,
+								processData:false,
+								dataType:"json",
+								success:function(data){
+									window.filepath = data.response.data.file_path
+									window.filename = data.response.data.file_name
+								},
+								error:function(data){
+									plus.nativeUI.toast("file upload failed！");
+								}
+							});	
+							}
+						getimgbase64();	
+						$.ajax({
+						type: "post",
+						url: basepath+"api/v1.0/inforshare",
+						data:{
+							"access_token":localStorage.getItem("token"),
+							"infor_title":titleBox.value,
+							"infor_type":category.innerText,
+							"infor_text":textareaBox.value,
+							"images_list":JSON.stringify(images_array),
+							"filename":window.filename,
+							"filepath":window.filepath,
+						},
+						async: false,
+						dataType:"json",//如果返回的是str，那么这个地方必须用text，用json报错
+						success: function(data) {
+//							alert(JSON.stringify(data))
+							if (data.response.success=="1")
+							{	
+								wt.close();
+								plus.nativeUI.toast("succeed");
+								mui.back();
+								
+							}else{
+								plus.nativeUI.toast("failed");
+							}
+						},
+						error: function() {
+							plus.nativeUI.toast("server error!");
+						}
+					});
+			
+						}
+						});
+
+			   newinfor_cancelButton.addEventListener('tap',function(event){
+			   	mui.back();
+			   })
+			
+				});
+			})(mui, document);
+		</script>
+	</body>
+</html>

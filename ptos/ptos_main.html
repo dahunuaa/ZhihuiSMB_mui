@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>businessInformation</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		
+		<style>
+			html,
+			body {
+				background-color:#efeff4;
+			}
+		    #pullrefresh{
+		    	margin:-10px 0px 0px 0px;
+		    }
+		    
+		    .mui-table-view-cell{
+		    	border-radius: 30px;
+		    	margin-left: 40px;
+		    	margin-right: 0px;
+		    	background-color:#D8D8D8;
+		    	margin-bottom: 10px;
+		    }
+		    .mui-icon-checkmarkempty{
+		      margin-left: 10px;
+		      background-color: #007AFF;
+		      border-radius: 15px;
+		      float:left;/*先将前面的符号改成浮动型的再改margin-top就可以和数据对齐了*/
+		      margin-top:50px;
+		    }
+		    .mui-table-view-chevron{
+		    	border-bottom:hidden;
+		    }
+		    .icon-daiwancheng{
+		      margin-left: 10px;
+		      background-color:#CF2D28;
+		      border-radius: 15px;
+		      float:left;
+		      margin-top:50px;
+		    }
+		    /*#pullrefresh{
+		    	margin:50px 0px 0px 0px;//苹果版本
+		    }*/
+		   
+		   #ptos_search{
+		   	font-size: 15px;
+		   	
+		   }
+		   #sign_choose{
+				width:170px;
+			}
+		   #mine{
+				width:200px
+			}
+			.mui-bar
+			{
+			    position: fixed;
+			    height: 175px;
+			    padding-right: 0px;
+			    padding-left: 0px;
+			}
+			.unread{
+		   	  height: 10px;
+		   	  width: 10px;
+		      margin-right: 0px;
+		      background-color:red;
+		      border-radius: 15px;
+		      float:right;/*先将前面的符号改成浮动型的再改margin-top就可以和数据对齐了*/
+		      margin-top:5px;
+		    }
+		    #myfeedbackPopover{
+				height: 180px;
+				width: 150px;
+				text-align:center;
+			}
+		</style>
+    </head>
+	<body>
+		<!--<div align="center" style="background-color:#FAFAFA">
+			<input type="search" id="ptos_search" class="mui-icon mui-icon-search" placeholder="请输入搜索内容" style="width:250px;height:35px; background-color:#E8E8E8; margin-top: 10px;margin-bottom: 5px;"/>
+			<span class="mui-icon mui-icon-search"></span>
+			<hr>
+		</div>-->
+		<div class="mui-content" style=" margin-top:-23px;" >
+			<span class="mui-bar"><!--复写mui-bar css -->
+			<div align="center" style="background-color:#FAFAFA">
+				<input type="search" id="ptos_search"  placeholder="search FAQs" style="width:250px;height:35px; background-color:#E8E8E8; margin-top: 32px;margin-bottom: 8px;"/>
+				<span class="mui-icon mui-icon-search"></span>
+			</div>
+				<ul class="mui-table-view mui-grid-view mui-grid-9 " >
+					<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-2" id="my_ptos">
+						<a href="#myfeedbackPopover">
+						<span class="mui-icon mui-icon-person" style="margin-top: -10px;color: red;font-size: 35px;">
+						</a>
+						<span class="mui-media-body" style="margin-top: -7px;">my questions</span></span>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"id="add_ptos">
+						<a>
+							<span class="mui-icon mui-icon-compose" style="margin-top: -10px;color: green;font-size: 35px;" >
+						</a>
+						<span class="mui-media-body" style="margin-top: -7px;">rapid ask</span></span>
+					</li>
+					
+		        </ul> 
+			</span>
+		        
+		</div>
+		
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper" >
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron" id="list" style="background-color:#efeff4;margin-top: 176px;">
+					
+				</ul>
+			</div>
+		</div>	
+		</div>
+		
+		<div id="myfeedbackPopover" class="mui-popover">
+			<div class="mui-scroll-wrapper" style="text-align: center;">
+			<div class="mui-button-row">
+				<button id="myfeedback" class="mui-btn mui-btn-primary" type="button">my questions</button>
+			</div>
+			<br />
+			<!--<div class="mui-button-row">
+				<button id="myanswer" class="mui-btn mui-btn-primary" type="button">my answer</button>
+			</div>
+			<br />-->
+			<div class="mui-button-row">
+				<button id="feedbacklike" class="mui-btn mui-btn-primary" type="button">questions like</button>
+			</div>
+			</div>
+			<!--<div class="mui-scroll-wrapper">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell"><a href="#" id="myfeedback">我的反馈</a>
+						</li>
+						<li class="mui-table-view-cell"><a href="#" id="myanswer">我的解答</a>
+						</li>
+					</ul>
+			</div>-->
+		</div>
+		
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script type="text/javascript" src="../js/basepath.js" ></script>
+	<script>
+		(function($,doc){
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down:{
+						callback:pulldownRefresh
+					},
+					up: {
+						contentrefresh: 'loading...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			$.init({ //需要先定义longtap
+					gestureConfig:{
+					   tap: true, //默认为true
+					   longtap: true, //默认为false
+					  }}) 
+					  
+			document.getElementById("ptos_search").addEventListener("tap",function(event){
+					mui.openWindow({
+						url:"ptos_search.html",
+						id:"ptos_search"
+					})
+				})
+			
+			//我的
+			document.getElementById("myfeedback").addEventListener('tap',function () {
+				mui.openWindow({
+			    url:"myptos.html",
+			    id:"myptos",
+				})
+			})
+			
+//			document.getElementById("myanswer").addEventListener('tap',function(){
+//				mui.openWindow({
+//					url:'myanswerptos.html',
+//					id:'myanswerptos',
+//				})
+//			})
+			document.getElementById("feedbacklike").addEventListener('tap',function(){
+				mui.openWindow({
+					url:'like_base.html',
+					id:'like_base',
+				})
+			})
+			
+			
+			var list = document.getElementById("list")	
+			var count = -1;
+			
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				count = count +1
+				setTimeout(function() {
+					mui.ajax({
+					type: "get",//后面必须加逗号！！！！！！！！
+					url: basepath+"api/v1.0/ptos?access_token="+localStorage.getItem("token")+"&page_size=10&page="+(count+1),
+					async:true,
+					dataType:"json",
+					success:function(data){
+//						console.info(JSON.stringify(data))
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.response.data ==""||null));	
+						
+						unread_msg = data.response.unread.ptos_unread
+						mui.each(data.response.data,function(key,value){
+//						alert(JSON.stringify(value))
+						var li = document.createElement("li")
+						li.className = "mui-table-view-cell"
+						li.setAttribute("ptos_id",value._id);
+						li.setAttribute("editor_id",value.add_user_id);
+						li.setAttribute("editor_jobno",value.add_user_jobno);
+						li.setAttribute("editor_name",value.add_user_name);
+						li.setAttribute("add_time",value.add_time);
+						li.setAttribute("ptos_title",value.title);
+						li.setAttribute("ptos_to_no",value.to_no);
+						li.setAttribute("ptos_to_name",value.to_name);
+						li.setAttribute("ptos_images",value.images)
+						li.setAttribute("ptos_context",value.context)
+						li.setAttribute("ptos_category",value.category)
+						li.setAttribute("ptos_result",value.result)
+						if(unread_msg.indexOf(value._id)>=0){
+							li.innerHTML ='<span class="unread"></span>'+"editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
+									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+						}else{
+							li.innerHTML = "editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
+									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+						}
+						var read_text="editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
+									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+                        
+						var icon = document.createElement("icon")
+						
+						if(value.result==""){
+							icon.className="mui-icon iconfont icon-daiwancheng"	
+						}else{
+							icon.className="mui-icon mui-icon-checkmarkempty"						
+						}
+						list.appendChild(icon)
+                        list.appendChild(li)
+                        li.setAttribute("li_text",read_text)       
+                       
+					})
+					mui("#list").on('tap','li',function(){
+						var ptos_id = this.getAttribute("ptos_id")
+						var editor_id = this.getAttribute("editor_id")
+						var editor_name = this.getAttribute("editor_name")
+						var editor_jobno = this.getAttribute("editor_jobno")
+						var add_time = this.getAttribute("add_time")
+						var except_time = this.getAttribute("except_time")
+						var ptos_title = this.getAttribute("ptos_title")
+						var ptos_to_no = this.getAttribute("ptos_to_no")
+						var ptos_to_name = this.getAttribute("ptos_to_name")
+						var ptos_images = this.getAttribute("ptos_images")
+						var ptos_context = this.getAttribute("ptos_context")
+						var ptos_category = this.getAttribute("ptos_category")
+						var ptos_result= this.getAttribute("ptos_result")
+						var li_text = this.getAttribute("li_text")
+						
+						mui.openWindow({
+					    url:"ptos_detail.html",
+					    id:"ptos_detail",
+					    
+					    extras:{
+					    	ptos_id:ptos_id,
+					    	editor_id:editor_id,
+					    	editor_name:editor_name,
+					    	editor_jobno:editor_jobno,
+					    	add_time:add_time,
+					    	except_time:except_time,
+					    	ptos_title:ptos_title,
+					    	ptos_to_no:ptos_to_no,
+					    	ptos_to_name:ptos_to_name,
+					    	ptos_images:ptos_images,
+					    	ptos_context:ptos_context,
+					    	ptos_category :ptos_category,
+					    	ptos_result:ptos_result,
+					    }
+					     
+						})
+						this.innerHTML=li_text;//点击查看详情即为已读
+						
+						$.ajax({
+							type: "PUT",
+							url:basepath +"api/v1.0/msgunread/minus",
+							data:{
+								"access_token":localStorage.getItem("token"),
+								"user_id":localStorage.getItem("job_no"),
+								"type":"ptos",
+								"msg_id":ptos_id,
+								
+							},
+							async: true,
+							dataType:"json",
+							success: function(data) {
+							},
+							error: function() {
+								plus.nativeUI.toast("请求服务器出现失败!");
+							}
+						});
+	                  });
+	                 //长按删除（管理员）
+	                 mui("#list").on("longtap","li",function(){
+	                 	ptos_id = this.getAttribute("ptos_id")
+	                 	if("admin"==localStorage.getItem("scope")){
+	                 		mui.confirm("是否删除该记录？","",["取消","删除"],function(e){
+							if(e.index==1){
+								mui.ajax({
+								type:"delete",
+								url:basepath+"api/v1.0/ptos/"+ptos_id+"?access_token="+localStorage.getItem("token"),
+								data:{
+									
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+									if(data.response.success =="1")
+									{
+										plus.nativeUI.toast("已删除该记录")
+										plus.webview.currentWebview().reload()
+									}else{
+										plus.nativeUI.toast("删除失败，请重试！")
+									}
+								},
+								error:function(){
+									plus.nativeUI.toast("请求服务器失败!");
+								}
+							})
+								
+							}
+						})
+	                 	}
+	                 })
+						
+					},
+					});
+				}, 100);
+				
+			}
+			/*
+			 下拉刷新(以从新加载本页的方法来实现)
+			 * */
+			function pulldownRefresh(){
+			   mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+               plus.webview.currentWebview().reload();
+			}
+			
+			
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 100);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+			
+			document.getElementById("add_ptos").addEventListener('tap',function(){
+				mui.openWindow({
+					url:"ptos_add.html",
+					id:"ptos_add",
+					
+				})
+				
+				
+			})
+			
+
+		}(mui,document))
+		</script>
+
+  </body>
+</html>

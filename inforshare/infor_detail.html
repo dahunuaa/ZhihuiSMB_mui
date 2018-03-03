@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>detail_inforguide</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <link rel="stylesheet" href="../css/image_preview.css" />
+        <link rel="stylesheet" href="../css/comment.css" />
+        <link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+        <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+        
+		<style type="text/css">
+			body {
+				background-color:#efeff4;
+			}
+		    div{
+		    	background-color: #EEEEEE;
+		    }
+		    .inforshare-nolike{
+		    	color: #8F8F94;
+		    }
+		    .inforshare-like{
+		    	color: red;
+		    }
+		    .mui-table-view-cell-kid{
+		    	top: 0;
+				margin-left: 20px;
+				margin-right: 20px;
+		    }
+		    .mui-icon-extra-like{
+		    	font-size: 20px;
+		    }
+		    .mui-icon-extra-comment{
+		    	font-size: 20px;
+		    }
+		    #icon_comment{
+		    	margin-left: 10px;
+		    }
+		    #icon_like{
+		    	margin-left: 50px;
+		    }
+		    .mui-card-footer{
+		    	background-color: white;
+		    }
+		    #icon_like_right{
+		    	position: relative;
+		    	background-color: white;
+		    	float:right;
+		    	right:10px
+		    	/*图标靠右浮动*/
+		    }
+		    #dianzan{
+		    	position: relative;
+		    	background-color: white;
+		    	float:right;
+		    	right:-30px
+		    }
+		    .mui-icon-plusempty{
+				font-size: 70px;
+				color:#FF0000 ;
+				position: fixed;
+				bottom: 30px;
+				left:20px
+			}
+		   
+		   
+		</style>
+
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			 
+			 <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			 <!--<a class="mui-icon mui-icon-reload mui-pull-right" id="refresh"><div style="margin:-18px 10px 10px 30px; font: '楷体';font-size: 18px;">刷新</div></a>-->
+			<h1 class="mui-title">inforshare detail</h1>
+			<span class="mui-pull-right" style="margin-top: 10px;">
+				<a class="inforshare-nolike" id="like" ><span class="mui-icon-extra mui-icon-extra-heart-filled"></span></a>
+			</span>
+		</header>		
+		
+		<div class="mui-content" >
+			<h4 id="inforshare_title" style="text-align: center"></h4>		
+	        <span >information ID:</span>&nbsp;&nbsp;&nbsp;<span id="inforshare_id"></span>	      
+	        <br />
+	        <span >editor:</span>&nbsp;&nbsp;&nbsp;<span id="inforshare_editor_name"></span>      
+	        <br />
+	        <span >add time:</span>&nbsp;&nbsp;&nbsp;<span id="inforshare_time"></span>          
+	        <br />
+	        <span >category:</span>&nbsp;&nbsp;&nbsp;<span id="inforshare_type"></span>
+	        <br />
+	        <span style="border-left:20px;">content:</span>&nbsp;&nbsp;&nbsp;<span id="inforshare_text"></span>
+	        <br/>
+        	<span>file：</span><span id="file_to_download"></span>
+			<br/>
+			<span id="processspan">download progress：</span><span id="processtext"></span>
+			<div class="mui-button-row">
+				<button id="downloadfile" class="mui-btn mui-btn-primary" type="button" onclick="return true;" >tap to download</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="openfile" class="mui-btn mui-btn-danger" type="button" onclick="return false;">openfile</button>
+			</div>	
+			<br />
+	        <p style="display: block;" id="images_list">
+				
+	        </p>
+	        <span id="comment_area">comment area：</span>
+			<div id="comments" class="comment">
+				<ul class="mui-table-view mui-table-view-chevron" id="comments_list">
+					
+				</ul>
+			</div>
+		</div>
+		<span class="mui-icon mui-icon-plusempty" id="comment_btn"></span>
+		<!--<footer>
+			<div class="footer-center">
+				<textarea id='comment_text' type="text" class='input-text' placeholder="enter your comment~"></textarea>
+			</div>
+			<label for="" class="footer-right">
+				<div id="comment_btn" class="mui-btn mui-btn-primary">
+					review
+				</div>
+			</label>
+		</footer>-->
+	
+		<script src="../js/app.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/mui.view.js "></script>
+		<script src="../js/mui.zoom.js"></script>
+		<script src="../js/mui.previewimage.js"></script>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script>
+			
+		 //点击下载和打开按钮中的onclick时间的tap按钮不能放在（function（$,doc）{mui,document}下面 要不然不好使）
+//			(function($,doc){
+			(function($,doc){
+				$.init({
+					gestureConfig:{
+					   tap: true, //默认为true
+					   longtap: true, //默认为false
+					  }
+				});
+			}(mui, document));
+				
+				mui.plusReady(function(){
+					var inforshare_title = document.getElementById('inforshare_title');
+			        var inforshare_id = document.getElementById('inforshare_id');
+			        var inforshare_editor_name = document.getElementById('inforshare_editor_name');
+					var inforshare_text = document.getElementById("inforshare_text");
+					var inforshare_type = document.getElementById("inforshare_type");
+					
+					var inforshare_time = document.getElementById("inforshare_time");
+					var file_to_download = document.getElementById("file_to_download");
+					var file_size = document.getElementById("filesize")
+					var images_list = document.getElementById("images_list")
+					
+					//获取前一个页面传过来的值
+					var self = plus.webview.currentWebview();//必须用plusReady 来获取前面传过来的值
+					var _inforshare_id =self.infor_id
+					var _inforshare_editor = self.infor_editor
+					var _inforshare_editor_name = self.infor_name
+					var _inforshare_title = self.infor_title
+					var _inforshare_type = self.infor_type
+					var _inforshare_text = self.infor_text
+					var _time = self.infor_time
+					var _images_list = self.images_list
+					var file_name = self.filename
+					var filepath = self.filepath
+					if(file_name == "null"||file_name ==""||file_name=="undefined"){
+						file_name = "无"
+						document.getElementById("processspan").style.display="none"
+						document.getElementById("downloadfile").style.display ="none"
+						document.getElementById("openfile").style.display="none"
+					}				
+				    inforshare_id.innerHTML=_inforshare_id
+					inforshare_title.innerHTML=_inforshare_title
+					inforshare_time.innerHTML=_time
+					inforshare_type.innerHTML=_inforshare_type
+					inforshare_editor_name.innerHTML=_inforshare_editor_name
+					inforshare_text.innerHTML=_inforshare_text
+					file_to_download.innerHTML=file_name	
+					
+					//显示图片
+					_images_list=_images_list.split(",")
+					var images_amounts = _images_list.length
+					for(i=0;i<images_amounts;i++){
+						var img = document.createElement("img")
+						img.src = _images_list[i]
+						img.setAttribute("style","width: -webkit-fill-available")
+						img.setAttribute("data-preview-src","")
+						img.setAttribute("data-preview-group","1")//设置属性是这样设置的
+						images_list.appendChild(img)
+						mui.previewImage();
+					}
+					
+					//收藏操作
+					like_style = document.getElementById("like")
+					mui.ajax({
+						type:"get",
+						url:basepath+"api/v1.0/like?access_token="+localStorage.getItem("token")+"&user_id="+localStorage.getItem("job_no"),
+						async:true,
+						dataType:"json",
+						success:function(data){
+							inforshare_like = data.response.data[0].inforshare_like//注意data中list和dict的区别
+							if(inforshare_like.indexOf(_inforshare_id)>=0){
+								like_style.className="inforshare-like"
+							}else{
+								like_style.className="inforshare-nolike"
+							}
+							
+						},
+						error: function() {
+							plus.nativeUI.toast("server error!");
+						}
+						
+					})
+					
+					like_style.addEventListener('tap',function(){
+						if(like_style.className=="inforshare-nolike"){//注意复制和判断是否相等
+							like_style.className="inforshare-like"
+							mui.ajax({
+								type:"PUT",
+								url:basepath+"api/v1.0/like/alter",
+								data:{
+									"access_token":localStorage.getItem("token"),
+									"user_id":localStorage.getItem("job_no"),
+									"type":"inforshare",
+									"like_id":_inforshare_id,
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+									if(data.response.success == "1"){
+										plus.nativeUI.toast("like")
+									}else{
+										plus.nativeUI.toast("operation failed")
+									}
+								},
+								error:function(){
+									plus.nativeUI.toast("server error!")
+								}
+							})
+							
+							
+						}else{
+							like_style.className = "inforshare-nolike"
+							mui.ajax({
+								type:"put",
+								url:basepath+"api/v1.0/like/alter",
+								data:{
+									"access_token":localStorage.getItem("token"),
+									"user_id":localStorage.getItem("job_no"),
+									"type":"inforshare",
+									"like_id":_inforshare_id,
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+									if(data.response.success == "1"){
+										plus.nativeUI.toast("unlike")
+									}else{
+										plus.nativeUI.toast("operation failed")
+									}
+								},
+								error:function(){
+									plus.nativeUI.toast("server error!")
+								}
+							})
+							
+						}
+					})
+		      	
+		      		var processtext = document.getElementById("processtext")
+					var dtask=null;
+					var fileName=file_name;
+					document.getElementById("downloadfile").addEventListener('tap',function(e){
+						if(file_name==""){
+							plus.nativeUI.toast("no file！")
+						}else{
+							var url = filepath;
+						    var options = {method:"GET",filename:"_doc/"+fileName};
+							dtask = plus.downloader.createDownload(url, options);//目前这种方式仅支持网络文件，本地文件不可以
+						    dtask.addEventListener( "statechanged", function(task,status){
+						    	if(!dtask){return;}
+						    	switch(task.state) {
+						    		case 1: // 开始
+						    			plus.nativeUI.toast("preparing...");			    			
+						    		break;
+						    		case 2: // 已连接到服务器
+						    			plus.nativeUI.toast("downlaoding...");
+						    		break;
+						    		case 3:	// 已接收到数据
+										processtext.innerHTML=task.downloadedSize+"/"+task.totalSize;
+//										
+						    			
+						    		break;
+						    		case 4:	// 下载完成			    			
+						    			processtext.innerHTML=parseInt(task.totalSize/1024)+"KB"
+						    			plus.nativeUI.toast("done");
+						    		break;
+						    	}
+						    } );
+			
+						    dtask.start();
+							}
+					    
+						})
+					document.getElementById("openfile").addEventListener('tap',function(e){
+						plus.runtime.openFile("_doc/"+fileName, {},function(e){
+							plus.nativeUI.toast("open failed")
+				    })
+					})
+					
+					
+					//显示当前出差任务下的评论
+					var comment_list = document.getElementById("comments_list")
+					mui.ajax({
+					type:"get",
+					url:basepath+"api/v1.0/comment?access_token="+localStorage.getItem('token')+"&comment_type=inforshare&text_id="+_inforshare_id+"&comment_status=father",
+					async:true,
+					dataType:"json",
+					success:function(data){
+						if(data.response.data==""||data.response.data==NaN||data.response.data==undefined){
+							document.getElementById("comment_area").style.display="none"
+						}
+						mui.each(data.response.data,function(key,value){
+						var li = document.createElement("li")
+						li.className="mui-table-view-cell"
+//						li.className="mui-card"
+						li.setAttribute("to_user_id",value.user_id)
+						li.setAttribute("to_user_name",value.add_user_name)
+						li.setAttribute("father_comment_id",value._id)
+						li.setAttribute("comment_id",value._id)
+						li.setAttribute("_like_amounts",value.like_amounts)
+						li.setAttribute("_like_users",value.like_users)
+						li.setAttribute("comment_text",value.text)
+						li.setAttribute("comment_add_time",value.add_time)
+//						console.info(li.getAttribute("_like_amounts"))
+						
+						
+						li.innerHTML="<span id='com_name'>"+value.add_user_name+"</span>"+
+										'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'
+										+"&nbsp;"+"<span id='dianzan'>"+li.getAttribute("_like_amounts")+"</span>"
+										+"<br>"+"<span id='com_text'>"+value.text
+										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time+"</span>"+
+										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
+		    	
+						//将点赞和评论以footer的形式放在每个评论卡片的下方
+//						var footer_div = document.createElement("li")
+//						footer_div.className="mui-card-footer"
+//						var comment_a = document.createElement("a")
+//						comment_a.className="mui-icon-extra mui-icon-extra-comment"
+//						comment_a.id="icon_comment"
+//						var time_span = document.createElement("span")
+//						time_span.innerHTML=value.add_time+"&nbsp;&nbsp;"
+//						footer_div.appendChild(time_span)
+//						footer_div.appendChild(comment_a)
+//						li.appendChild(footer_div)
+						
+						comment_list.appendChild(li)
+						
+						
+						mui.each(value.childen_comment_ids,function(key,value){
+							var kid_li = document.createElement("li");
+							kid_li.setAttribute("to_user_id",value.user_id)
+							kid_li.setAttribute("to_user_name",value.add_user_name)//此处注意逻辑
+							kid_li.setAttribute("father_comment_id",li.getAttribute("father_comment_id"))
+							kid_li.setAttribute("comment_id",value._id)
+							kid_li.setAttribute("_like_amounts",value.like_amounts)
+							kid_li.className="mui-table-view-cell-kid";
+							kid_li.style.backgroundColor="#C7C7CC"
+//							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"</span>"+'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'+"<br>"+"<span id='com_text'>"+value.text+"</span>"
+//							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"</span>"+"<br>"+"<span id='com_text'>"+value.text+"</span>"
+							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"@"+value.to_user_name+"</span>"
+										+"<br>"+"<span id='com_text'>"+value.text
+										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time.split('.')[0]+"</span>"+
+										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
+//							var kid_footer_div = document.createElement("div")
+//							kid_footer_div.className="mui-card-footer"
+//							kid_footer_div.style.backgroundColor="#C7C7CC"
+//							var comment_a = document.createElement("a")
+//							comment_a.className="mui-icon-extra mui-icon-extra-comment"
+//							comment_a.id="icon_comment"
+//							var time_span = document.createElement("span")
+//							time_span.innerHTML=value.add_time.split(".")[0]+"&nbsp;&nbsp;"
+//							kid_footer_div.appendChild(time_span)
+//							kid_footer_div.appendChild(comment_a)
+//							kid_li.appendChild(kid_footer_div)
+							comment_list.appendChild(kid_li)
+						})
+						})
+						
+					//长按评论删除
+//					 mui("#comments_list").on("longtap","li",function(){
+//					 	comment_id=this.getAttribute("comment_id")
+//					 	user_id = this.getAttribute("user_id")
+//					 	var btnArray = ['no', 'yes'];
+//						mui.confirm('delete？', '', btnArray, function(e) {
+//							if (e.index == 1) {
+//								mui.ajax({
+//									type:"delete",
+//									url:basepath+"api/v1.0/comment/"+comment_id+"?access_token="+localStorage.getItem("token"),
+//									data:{
+//										"user_id":localStorage.getItem("job_no")
+//									},
+//									async:true,
+//									dataTyoe:"json",
+//									success:function(data){
+//										if(data.response.success=="1"){
+//											plus.nativeUI.toast("it is deleted~")
+//											plus.webview.getWebviewById("infor_detail").reload()
+//										}else if(data.response.success =="0"){
+//											plus.nativeUI.toast("no permission！")
+//										}else{
+//											plus.nativeUI.toast("server error~")
+//										}
+//									},
+//								});
+//							} else {
+//							   
+//							}
+//						})
+//					 })
+						 	
+		   		        },
+					});
+					
+					//提交评论
+//					comment_text = document.getElementById("comment_text")
+					comment_btn = document.getElementById("comment_btn")
+					comment_btn.addEventListener('tap',function(event){
+						var btnArray = ['cancel', 'submit'];
+							mui.prompt(' ', 'enter your reply...', 'ZhihuiSMB', btnArray, function(e) {
+								if (e.index == 1) {
+									if(e.value ==""){
+							plus.nativeUI.toast("enter comment text~")
+						}else{
+								mui.ajax({
+								type:"post",
+								url:basepath+"api/v1.0/comment",
+								data:{
+									"access_token":localStorage.getItem("token"), 
+									"comment_type":"inforshare",
+									"text_id":_inforshare_id,
+									"user_id":localStorage.getItem("job_no"),
+									"text":e.value,
+									"to_user_id":"",
+									"to_user_name":"",
+									"father_comment_id":"",
+									"comment_status":"father",
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+								 	if (data.response.success == "1"){
+											plus.nativeUI.toast("comment succeed~")
+											plus.webview.getWebviewById("infor_detail").reload()
+										}else{
+											plus.nativeUI.toast("comment failed！")
+										}   
+								}
+							 });	
+							}
+									info.innerText = 'reply succeed';
+								} else {
+									
+								}
+							})
+					})
+					
+					
+					//增加回复
+					mui("#comments_list").on('tap','.mui-icon-extra-comment',function(e){
+							var to_user_id_f = this.parentNode.getAttribute("to_user_id")
+							var to_user_name_f = this.parentNode.getAttribute("to_user_name")
+							var father_comment_id_f = this.parentNode.getAttribute("father_comment_id")
+							e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
+							var btnArray = ['cancel', 'submit'];
+							mui.prompt(' ', 'enter your reply...', 'ZhihuiSMB', btnArray, function(e) {
+								if (e.index == 1) {
+									mui.ajax({
+									type:"post",
+									url:basepath+"api/v1.0/comment",
+									data:{
+										"access_token":localStorage.getItem("token"), 
+										"comment_type":"inforshare",
+										"text_id":_inforshare_id,
+										"user_id":localStorage.getItem("job_no"),
+										"text":e.value,
+										"to_user_id":to_user_id_f,
+										"to_user_name":to_user_name_f,//加上this.parentNode即可获得父辈的信息
+										"father_comment_id":father_comment_id_f,
+										"comment_status":"kid",
+									},
+									async:true,
+									dataType:"json",
+									success:function(data){
+//										console.info(JSON.stringify(data.response))
+									 	if (data.response.success == "1"){
+												plus.nativeUI.toast("comment succeed~")
+												plus.webview.getWebviewById("infor_detail").reload()
+											}else{
+												plus.nativeUI.toast("comment failed！")
+											}   
+									}
+								 });
+									info.innerText = 'reply succeed';
+								} else {
+									
+								}
+							})
+							return false;//return false后，tap事件不再冒泡到li上.
+					});
+					
+					//点赞
+					mui("#comments_list").on('tap','.mui-icon-extra-like',function(e){
+							var like_comment_id = this.parentNode.getAttribute("comment_id")
+							var user_name = this.parentNode.getAttribute("to_user_name")
+							var comment_text = this.parentNode.getAttribute("comment_text")
+							var like_users = this.parentNode.getAttribute("_like_users")
+							var like_amounts = this.parentNode.getAttribute("_like_amounts")
+							var comment_add_time = this.parentNode.getAttribute("comment_add_time")
+							var amounts_like =parseInt(like_amounts)+1 
+							
+							if(like_users.indexOf(localStorage.getItem("job_no"))>=0){
+								mui.toast("Allow only one agreement")
+							}else{
+								var obj=this;//保存当前this对象 
+								mui.ajax({
+									type:"PUT",
+									url:basepath+"api/v1.0/comment/like_amount",
+									data:{
+										"access_token":localStorage.getItem("token"), 
+										"user_id":localStorage.getItem("job_no"), 
+										"comment_id":like_comment_id,
+										"type":"1",
+									},
+									async:true,
+									dataType:"json",
+									success:function(data){
+									 	if (data.meta.code == "200"){
+												plus.nativeUI.toast("agree succeed~")
+												obj.parentNode.innerHTML="<span id='com_name'>"+user_name+"</span>"+
+													'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'
+													+"&nbsp;"+"<span id='dianzan' style='right:-30px'>"+amounts_like+"</span>"
+													+"<br>"+"<span id='com_text'>"+comment_text+"</span>"
+													+"</br>"+"</span>"+"<span id='com_time'>"+comment_add_time+"</span>"+
+													"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment'></span>"
+											}else{
+												if(data.response.exception.indexOf("Allow only one agreement")){
+													mui.toast("Allow only one agreement")
+												}else{
+													mui.toast("server error")
+												}
+											}   
+									}
+								 });
+//								 this.parentNode.innerHTML=like_amounts
+							}
+							
+							return false;//return false后，tap事件不再冒泡到li上.
+					});
+					
+				})
+
+				
+
+		</script>
+		
+	</body>
+</html>

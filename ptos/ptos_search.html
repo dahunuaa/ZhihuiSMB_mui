@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ptos_search</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			ul {
+				font-size: 14px;
+				color: #8f8f94;
+				
+			}
+			li{
+				list-style-type:none;/*去掉li前面的小黑点*/
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="buss_search"class="mui-title">search FAQs</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>title</label>
+					<input id="title" type="text" class="mui-input-clear" placeholder="enter key word of title">
+				</div>
+				<li class="mui-table-view-cell">
+					<a id="selectcategory" class="mui-navigate-right">
+						category<span id="category"style="padding: 0px 0px 0px 45px;"></span>
+					</a>
+				</li>
+				<div class="mui-input-row">
+					<label>content</label>
+					<input id="textarea" type="text" class="mui-input-clear" placeholder="enter key word of content">
+				</div>
+				<li class="mui-table-view-cell">
+				<a id="to_sb" class="mui-navigate-right">
+					troubleshooter<span id="to_name"style="padding: 0px 0px 0px 65px;"></span>
+				</a>
+			    </li>
+				<button id="search_btn" type="button" class="mui-table-view-cell mui-btn mui-btn-block mui-btn-primary"  style="margin-top: 25px;">search</button>
+			</form>
+						
+		</div>
+		<script type="text/javascript" src="../js/app.js" ></script>
+		<script type="text/javascript" src="../js/mui.min.js" ></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script>
+			(function($, doc) {
+				$.init();
+				$.ready(function() {
+					//选择分类
+					var selectcategory = new $.PopPicker();
+					selectcategory.setData([{
+						value: 'machine design',
+						text: 'machine design'
+					},{
+						value: 'machine assembly',
+						text: 'machine assembly'
+					},{
+						value: 'projects',
+						text: 'projects'
+					},{
+						value: 'others',
+						text: 'others'
+					}]);
+					var showUserPickerButton = doc.getElementById('selectcategory');
+					var category = doc.getElementById('category');
+					showUserPickerButton.addEventListener('tap', function(event) {
+						selectcategory.show(function(items) {
+							category.innerText = items[0].text;
+							//返回 false 可以阻止选择框的关闭
+//							return false;
+						});
+					}, false);
+					
+					var showUserPickerButton = doc.getElementById('to_sb');
+					var category = doc.getElementById('category');
+					showUserPickerButton.addEventListener('tap', function(event) {
+						
+						$.ajax({
+								type: "get",
+								url: basepath+"api/v1.0/user/getcontact?access_token="+localStorage.getItem("token")+"&position=all",
+								async: false,
+								dataType:"json",
+								success: function(data) {
+									if (data.response.success=="1")
+									{	
+										contacts=data.response.data
+									}else{
+										plus.nativeUI.toast("get contacts failed！");
+									}
+								},
+								error: function() {
+									plus.nativeUI.toast("server error!");
+								}
+							});
+						var selecttoman = new $.PopPicker();
+						selecttoman.setData(contacts);
+						
+						selecttoman.show(function(items) {
+							to_name.innerText = items[0].text;
+						});
+					}, false);
+					
+					var titleBox = doc.getElementById("title")
+					var categoryBox = doc.getElementById("category")
+					var contentBox = doc.getElementById("textarea")
+					var tonameBox = doc.getElementById("to_name")
+					searchButton = doc.getElementById("search_btn")
+					searchButton.addEventListener('tap',function(event){
+						if (titleBox.value ==""&categoryBox.innerText==""&contentBox.value==""&tonameBox.innerHTML==""){
+							plus.nativeUI.toast("enter search conditions")
+						}else{
+							mui.openWindow({
+								url:"ptos_search_content.html",
+								id:"ptos_search_content",
+								
+								extras:{
+									title:titleBox.value,
+									category:categoryBox.innerText,
+									content:contentBox.value,
+									to_name:tonameBox.innerHTML
+									
+								}
+							})
+						}
+					})
+					
+			
+				});
+			})(mui, document);
+			
+		</script>
+	</body>
+</html>

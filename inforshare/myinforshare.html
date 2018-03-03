@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>news</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<style>
+			html,
+			body {
+				background-color:#efeff4;
+			}
+		    .mui-table-view-cell{
+		    	border-radius: 10px;
+		    	margin-left: 10px;
+		    	margin-right: 10px;
+		    	background-color:#D8D8D8;
+		    	margin-bottom: 10px;
+		    	margin-top: 10px;
+		    }
+		    .mui-icon-checkmarkempty{
+		      margin-left: 10px;
+		      background-color: #007AFF;
+		      border-radius: 15px;
+		      float:left;/*先将前面的符号改成浮动型的再改margin-top就可以和数据对齐了*/
+		      margin-top:50px;
+		    }
+		    .mui-table-view-chevron{
+		    	border-bottom:hidden;
+		    }
+		   
+		   #ptos_search{
+		   	font-size: 15px;
+		   	
+		   }
+		   #sign_choose{
+				width:170px;
+			}
+			.unread{
+		   	  height: 10px;
+		   	  width: 10px;
+		      margin-right: 0px;
+		      background-color:red;
+		      border-radius: 15px;
+		      float:right;/*先将前面的符号改成浮动型的再改margin-top就可以和数据对齐了*/
+		      margin-top:5px;
+		    }
+		   
+		</style>
+
+	</head>
+	 
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			 
+			 <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			 <!--<a class="mui-icon mui-icon-reload mui-pull-right" id="refresh"><div style="margin:-18px 10px 10px 30px; font: '楷体';font-size: 18px;">刷新</div></a>-->
+			<h1 class="mui-title">my information share</h1>
+			
+		</header>
+		
+		<div class="mui-content" >
+        <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron" id="list">
+					
+				</ul>
+			</div>
+		</div>
+		
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script type="text/javascript" src="../js/copy.js" ></script>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script>
+		(function($,doc){
+			$.plusReady(function(){
+				mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						contentrefresh: 'loading...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			var list = document.getElementById("list")
+			var count = -1;
+			function pullupRefresh() {
+				count = count +1
+				setTimeout(function() {
+					mui.ajax({
+					type: "get",//后面必须加逗号！！！！！！！！
+					url: basepath+"api/v1.0/inforshare?access_token="+localStorage.getItem("token")+"&page_size=10&page="+(count+1)+"&add_user_id="+localStorage.getItem("user_id"),
+					async:true,
+					dataType:"json",
+					success:function(data){
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.response.data ==""||null));	
+						unread_msg = data.response.unread.inforshare_unread
+						mui.each(data.response.data,function(key,value){
+//						alert(JSON.stringify(value))
+						var li = document.createElement("li")
+						li.className = "mui-table-view-cell"
+						li.setAttribute("infor_id",value._id);
+						li.setAttribute("infor_editor",value.add_user_jobno)
+						li.setAttribute("infor_name",value.add_user_name)
+						li.setAttribute("infor_title",value.infor_title)
+						li.setAttribute("infor_type",value.infor_type)
+						li.setAttribute("infor_text",value.infor_text)
+						li.setAttribute("infor_time",value.last_updated_time)
+						li.setAttribute("images_list",value.images)
+						li.setAttribute("filename",value.filename);
+						li.setAttribute("filepath",value.filepath);
+						if(unread_msg.indexOf(value._id)>=0){
+							li.innerHTML='<span class="unread"></span>'+"editor："+value.add_user_name +"<br>"+"add time："+value.last_updated_time+"<br>" +"title："+value.infor_title;
+                         
+						}else{
+							li.innerHTML="editor："+value.add_user_name +"<br>"+"add time："+value.last_updated_time+"<br>" +"title："+value.infor_title;
+                         
+						}
+						var read_text="editor："+value.add_user_name +"<br>"+"add time："+value.last_updated_time+"<br>" +"title："+value.infor_title;
+                        list.appendChild(li)
+                        li.setAttribute("li_text",read_text)       
+                       
+					})
+					mui("#list").on('tap','li',function(){
+						var infor_id = this.getAttribute("infor_id")
+						var infor_editor = this.getAttribute("infor_editor")
+						var infor_name = this.getAttribute("infor_name")
+						var infor_title = this.getAttribute("infor_title")
+						var infor_type = this.getAttribute("infor_type")
+						var infor_text = this.getAttribute("infor_text")
+						var infor_time = this.getAttribute("infor_time")
+						var images_list = this.getAttribute("images_list")
+						var filename = this.getAttribute("filename")
+						var filepath = this.getAttribute("filepath")
+						var li_text = this.getAttribute("li_text")
+						mui.openWindow({
+					    url:"infor_detail.html",
+					    id:"infor_detail",
+					    
+					    extras:{
+					    	infor_id:infor_id,
+					    	infor_editor:infor_editor,
+					    	infor_name:infor_name,
+					    	infor_title:infor_title,
+					    	infor_type:infor_type,
+					    	infor_text:infor_text,
+					    	infor_time:infor_time,
+					    	images_list:images_list,
+					    	filename:filename,
+					    	filepath:filepath,
+					    }
+					     
+						})
+						this.innerHTML=li_text;//点击查看详情即为已读
+						
+						$.ajax({
+							type: "PUT",
+							url:basepath +"api/v1.0/msgunread/minus",
+							data:{
+								"access_token":localStorage.getItem("token"),
+								"user_id":localStorage.getItem("job_no"),
+								"type":"inforshare",
+								"msg_id":infor_id,
+								
+							},
+							async: true,
+							dataType:"json",
+							success: function(data) {
+							},
+							error: function() {
+								plus.nativeUI.toast("server error!");
+							}
+						});
+	                  });
+	                 //长按复制 
+	                 mui("#list").on("longtap","li",function(){
+	                 	ptos_text = this.getAttribute("li_text")
+	                 	copy(ptos_text)
+	                 })
+						
+					},
+					});
+				}, 100);
+				
+			}
+			})
+
+			/*
+			 下拉刷新(以从新加载本页的方法来实现)
+			 * */
+			
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+
+		}(mui,document))
+		</script>
+	</body>
+</html>

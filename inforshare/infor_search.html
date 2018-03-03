@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ptos_search</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			ul {
+				font-size: 14px;
+				color: #8f8f94;
+				
+			}
+			li{
+				list-style-type:none;/*去掉li前面的小黑点*/
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="buss_search"class="mui-title">information search</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>title</label>
+					<input id="title" type="text" class="mui-input-clear" placeholder="enter key words">
+				</div>
+				<li class="mui-table-view-cell">
+					<a id="selectcategory" class="mui-navigate-right">
+						category<span id="category"style="padding: 0px 0px 0px 45px;"></span>
+					</a>
+				</li>
+				<div class="mui-input-row">
+					<label>content</label>
+					<input id="textarea" type="text" class="mui-input-clear" placeholder="enter key words">
+				</div>
+				<button id="search_btn" type="button" class="mui-table-view-cell mui-btn mui-btn-block mui-btn-primary"  style="margin-top: 25px;">search</button>
+			</form>
+						
+		</div>
+		<script type="text/javascript" src="../js/app.js" ></script>
+		<script type="text/javascript" src="../js/mui.min.js" ></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script>
+			(function($, doc) {
+				$.init();
+				$.ready(function() {
+					//选择分类
+					var selectcategory = new $.PopPicker();
+					selectcategory.setData([{
+						value: 'machine design',
+						text: 'machine design'
+					},{
+						value: 'machine assembly',
+						text: 'machine assembly'
+					},{
+						value: 'project',
+						text: 'project'
+					},{
+						value: 'creo',
+						text: 'creo'
+					},{
+						value: 'sap&windchill',
+						text: 'sap&windchill'
+					},{
+						value: 'others',
+						text: 'others'
+					}]);
+					var showUserPickerButton = doc.getElementById('selectcategory');
+					var category = doc.getElementById('category');
+					showUserPickerButton.addEventListener('tap', function(event) {
+						selectcategory.show(function(items) {
+							category.innerText = items[0].text;
+							//返回 false 可以阻止选择框的关闭
+//							return false;
+						});
+					}, false);
+
+					var titleBox = doc.getElementById("title")
+					var categoryBox = doc.getElementById("category")
+					var contentBox = doc.getElementById("textarea")
+					searchButton = doc.getElementById("search_btn")
+					searchButton.addEventListener('tap',function(event){
+						if (titleBox.value ==""&categoryBox.innerText==""&contentBox.value==""){
+							plus.nativeUI.toast("enter search condition")
+						}else{
+							mui.openWindow({
+								url:"infor_search_content.html",
+								id:"infor_search_content",
+								
+								extras:{
+									title:titleBox.value,
+									category:categoryBox.innerText,
+									content:contentBox.value,
+								}
+							})
+						}
+					})
+					
+			
+				});
+			})(mui, document);
+			
+		</script>
+	</body>
+</html>

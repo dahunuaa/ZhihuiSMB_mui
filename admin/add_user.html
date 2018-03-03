@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>changepsw</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			html,body {
+				background-color: #efeff4;
+			}
+			li{
+				list-style-type:none;/*去掉li前面的小黑点*/
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">add user</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>No.</label>
+					<input id="job_no" type="text" class="mui-input-clear" placeholder="enter user job number" />
+				</div>
+				<div class="mui-input-row">
+					<label>name</label>
+					<input id="name" type="text" class="mui-input-clear" placeholder="enter user name" />
+				</div>
+				<div class="mui-input-row">
+					<label>tel</label>
+					<input id="mobile" type="text" class="mui-input-clear" placeholder="enter user telephone" />
+				</div>
+				<div class="mui-input-row">
+					<label>init password</label>
+					<input id="psw" type="text" class="mui-input-clear" placeholder="enter init password" />
+				</div>
+				<li class="mui-table-view-cell">
+					<a id="selectgroup" class="mui-navigate-right">
+						group<span id="group"style="padding: 0px 0px 0px 80px;" ></span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="selectusertype" class="mui-navigate-right">
+						user type<span id="usertype"style="padding: 0px 0px 0px 45px;" ></span>
+					</a>
+				</li>
+			</form>
+			<div class="mui-button-row">
+					<button id="submit" class="mui-btn mui-btn-primary" type="button" onclick="return true;">submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<button id="cancel" class="mui-btn mui-btn-danger" type="button" onclick="return false;">cancel</button>
+				</div>
+		</div>
+
+		</div>
+		<script src="../js/app.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script>
+			(function($,doc){
+				$.init();
+				$.ready(function(){
+					
+					//选择用户类型
+					var user_type = new $.PopPicker();
+					user_type.setData([{
+						value: 'normal',
+						text: 'normal',
+					},{
+						value: 'backend',
+						text: 'backend'
+					}]);
+					var showUserPickerButton = doc.getElementById('selectusertype');
+					var usertype = doc.getElementById('usertype');
+					usertype.innerText = "normal";
+					showUserPickerButton.addEventListener('tap', function(event) {
+						user_type.show(function(items) {
+							usertype.innerText = items[0].text;
+							//返回 false 可以阻止选择框的关闭
+//							return false;
+						});
+					}, false);
+					
+					//选择组别工种
+					var _user_group = new $.PopPicker();
+					_user_group.setData([{
+						value: 'ZSA1',
+						text: 'ZSA1'
+					},{
+						value: 'ZSA2',
+						text: 'ZSA2',
+					},{
+						value: 'ZSA3',
+						text: 'ZSA3'
+					},{
+						value: 'ZSA4',
+						text: 'ZSA4'
+					},{
+						value: 'others',
+						text: 'others'
+					}]);
+					var showUsergroupnPickerButton = doc.getElementById('selectgroup');
+					var u_group = doc.getElementById('group');
+					u_group.innerText = "ZSA1";
+					showUsergroupnPickerButton.addEventListener('tap', function(event) {
+						_user_group.show(function(items) {
+							u_group.innerText = items[0].text;
+							//返回 false 可以阻止选择框的关闭
+//							return false;
+						});
+					}, false);
+					
+					var job_no = document.getElementById("job_no");
+					var name=document.getElementById("name");
+					var psw= document.getElementById("psw");
+					var mobile = document.getElementById("mobile");
+					var scope = document.getElementById("usertype")
+					
+					
+					document.getElementById("submit").addEventListener('tap',function(){
+						if(scope.innerHTML == "normal"){
+							var user_scope ="normal"
+						}else if(scope.innerHTML == "backend"){
+							var user_scope ="backend"
+						}
+						if(job_no.value==""){
+							plus.nativeUI.toast("enter user job number")
+						}else if(name.value==""){
+							plus.nativeUI.toast("enter user name")
+						}else if(mobile.value==""){
+							plus.nativeUI.toast("enter user tel")
+						}else if(psw.value==""){
+							plus.nativeUI.toast("enter password")
+						}else if(scope.innerText==""){
+							plus.nativeUI.toast("select user type")
+						}else if(u_group.innerText==""){
+							plus.nativeUI.toast("select user group")
+						}else{
+						mui.ajax({
+							type:"post",
+							url:basepath+"api/v1.0/user/register",
+							data:{
+								"job_no":job_no.value,
+								"password":psw.value,
+								"name":name.value,
+								"scope":user_scope,
+								"mobile":mobile.value,
+								"group":u_group.innerText,
+							},
+							dataType:"json",
+							async:"true",
+							success:function(data){
+								if(data.response.success=="1"){
+									plus.nativeUI.toast("succeed！")
+									mui.back()
+								}else{
+									plus.nativeUI.toast(data.response.return_code)
+								}
+							},error:function(){
+								
+							}
+						})
+						}
+					})
+					 document.getElementById("cancel").addEventListener('tap',function(event){
+					   	mui.back();
+					   })
+					
+				});
+				
+			})(mui,document)
+		</script>
+	</body>
+</html>

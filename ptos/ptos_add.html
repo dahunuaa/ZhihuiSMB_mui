@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" class="picture">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>news</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/picture.css" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <!--<link href="../css/mui.dtpicker.css" rel="stylesheet" />-->
+        <link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			ul {
+				font-size: 14px;
+				color: #8f8f94;
+			}
+			li{
+				list-style-type:none;/*去掉li前面的小黑点*/
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			.aname {
+				font-size: 16px;
+			}
+			.ainf {
+				font-size: 12px;
+			}
+			.iplay {
+				display: block;
+				background: no-repeat right center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABYCAYAAAADWlKCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAKwwAACsMBNCkkqwAAABZ0RVh0Q3JlYXRpb24gVGltZQAwOS8xMi8xM5w+I3MAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAD9UlEQVR4nO2b3XETMRRGDwzvoYOkg5hRAVkqiKmAdIA7wHSQVECoALsC1gXciV0BTge4gvCwgnHk9d/+WF8m97ztxrlXs8fS1Urym6enJxwd3uZugPMcFyKGCxHDhYjhQsRwIWK4EDFciBguRAwXIoYLEcOFiOFCxHAhYrgQMVyIGC5EDBcihgsRw4WI4ULEcCFiuBAx3uVuwDGY2XtgCBTAALjc8tEFMAdKYBJC+HOK9nXBm5dwUM7MCmAEXDcMMQVuQwhlV23qC2khZjYAboGrjkLOgFEIYd5RvM6RrSFmdgs80J0MYqyHGFsSuR4S60TJ9vrwCEziZ+YhhGXy/xdU9aWgqjfnW+IsgEKtvkgJiUPUPfUyZsD42DoQ68+Y+p62AG6UhjAZITt6xopq3L9vGf+Gqh6dJX+S6ilKNaRkU8YCGLSVARBjDGLMdS5jbgkkhMQiWyejSGtEG2KsghopKoU++5AV68ZDcrvXYWTH8Pghdz1R6CHpN3MFDPsc02PsYcy1qy0nJ6uQOANKZz+jfcOUmd3H6W1jYo5RcvsqtikbuXtI+kBmBxbwz8DczMZtksdcsz1tOinZhMRxPF2bGh8R4gz4amZLMxu2aEqa8zq2LQs5e0j6EB8bLv6dAz/NrGwyjMWcj3vadjJyCimS60nLeFfAbzO7bfANT3MXLdvSmJxCBsl12VHcL8AyvpkfSpo7bdvJyCkkfQfocv5/Bnw3s/mBs6Y097aFzd7JPcv6T5dv5GtcAr/2TZN7yt0IGSE908k0+RS8FiEvhhd1yKEFUw5YAVBApoe0XQrZwgL4GEIY7pLRU+5G5OwhC57PZgbAsqPYK6rdxUMXC9Npbro8fzJy9pB0qll0FPcOuDhCRl3ubEvwOYWUyXXb5YoZ1X7GqMHSfZq7bNmWxuQUki5XnDdc+n4EPoUQiiabSzFnejKl7TJOY7IJid/iaXJ7fESIFfCNas+9zQNMc05zHnjIPctKx/mrA9egflCJGLd5eDFXukGWdddQYU+95PlDWVE97GXPeS+oivf6saBZCKHoM+8+cvcQ2NyhOwMmfW4SxdgTNs9oZd0tBAEhsRDfJbcvgbIPKTtOnNzlPnECAkPWP8xsTv3ZrJ1v2UfmuKDqGRt5QgjZ9kDWyd5D1iioP1U4P3KzqZYYY5v0om38rpDpIeCHrUFMCPjPEeSE/COetf3SU/i7EEL2GVUdSjXkGfGBfWDzIFsb/q93dRizU2R7yDr+o09R/GfRzsmRrSGvFRcihgsRw4WI4ULEcCFiuBAxXIgYLkQMFyKGCxHDhYjhQsRwIWK4EDFciBguRAwXIoYLEcOFiOFCxHAhYrgQMf4CVuqCm+17t3sAAAAASUVORK5CYII=);
+				background-size: 50px 44px;
+				-ms-touch-action: auto;
+			}
+		</style>
+
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">rapid ask</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>title</label>
+					<input id="title" type="text" class="mui-input-clear" placeholder="enter problem title"style="padding: 0px 0px 0px 30px;">
+				</div>
+				<li class="mui-table-view-cell">
+				<a id="selectcategory" class="mui-navigate-right">
+					category<span id="category"style="padding: 0px 0px 0px 85px;"></span>
+				</a>
+			    </li>
+			    <!--<li class="mui-table-view-cell">-->
+				<!--<a id="except_time" class="time_btn mui-navigate-right">
+					expect solve time<span id="e_time"style="padding: 0px 0px 0px 45px;"></span>
+				</a>-->
+			    <!--</li>-->
+			    <li class="mui-table-view-cell">
+				<a id="to_sb" class="mui-navigate-right">
+					troubleshooter
+					<span id="to_name"style="padding: 0px 0px 0px 65px;"></span>
+					<span id="to_no" style="display: none;"></span>
+				</a>
+			    </li>
+			    <div class="mui-input-row">
+					<label>project No.</label>
+					<input id="project_no" type="text" class="mui-input-clear" placeholder="enter project number(optional)"style="padding: 0px 0px 0px 30px;">
+				</div>
+			</form>
+			<br>
+			<label>&nbsp;&nbsp;&nbsp;description</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			
+			<div class="mui-input-row" style="margin: 10px 5px;">
+				<textarea id="textarea" rows="5" placeholder="enter description"></textarea>
+			</div>	
+			
+			<label>&nbsp;&nbsp;&nbsp;images（optional）</label>
+			<br />
+			<div id="image-list" class="row image-list" style="height: 80px">
+			</div>
+			<div class="mui-button-row">
+				<button id="newguide_submit" class="mui-btn mui-btn-primary" type="button" onclick="return true;">submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="newguide_cancel" class="mui-btn mui-btn-danger" type="button" onclick="return false;">cancel</button>
+			</div>
+			<br />
+			<br />
+		</div>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script src="../js/add_picture.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script type="text/javascript" src="../js/mui.picker.min.js" ></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<!--<script type="text/javascript" src="../js/get_video.js" ></script>-->
+		<script>
+		(function($, doc) {
+				$.init({ //需要先定义longtap
+					gestureConfig:{
+					   tap: true, //默认为true
+					   longtap: true, //默认为false
+					  }}) 
+				$.ready(function() {
+					
+					//选择分类
+					var selectcategory = new $.PopPicker();
+					selectcategory.setData([{
+						value: 'machine design',
+						text: 'machine design'
+					},{
+						value: 'machine assembly',
+						text: 'machine assembly'
+					},{
+						value: 'projects',
+						text: 'projects'
+					},{
+						value: 'others',
+						text: 'others'
+					}]);
+					var showUserPickerButton = doc.getElementById('selectcategory');
+					var category = doc.getElementById('category');
+					showUserPickerButton.addEventListener('tap', function(event) {
+						selectcategory.show(function(items) {
+							category.innerText = items[0].text;
+							//返回 false 可以阻止选择框的关闭
+//							return false;
+						});
+					}, false);
+					
+					//指定负责人
+					var showUserPickerButton = doc.getElementById('to_sb');
+					var to_name = doc.getElementById('to_name');
+					var to_no = doc.getElementById('to_no');
+					showUserPickerButton.addEventListener('tap', function(event) {
+							$.ajax({
+								type: "get",
+								url: basepath+"api/v1.0/user/getcontact?access_token="+localStorage.getItem("token")+"&position=all",
+								async: false,
+								dataType:"json",
+								success: function(data) {
+									if (data.response.success=="1")
+									{	
+										contacts=data.response.data
+									}else{
+										plus.nativeUI.toast("get contacts failed！");
+									}
+								},
+								error: function() {
+									plus.nativeUI.toast("server error!");
+								}
+							});
+							
+							var selecttoman = new $.PopPicker();
+							selecttoman.setData(contacts);
+							
+							
+							selecttoman.show(function(items) {
+							to_name.innerText = items[0].text;
+							to_no.innerText = items[0].value
+						})
+					}, false);
+					
+				 //拍摄视频
+//				 document.getElementById("make_video").addEventListener('tap',function(){
+//				 	if(document.getElementById("history").innerHTML.length<100){
+//				 		getVideo()
+//				 	}else{
+//				 		mui.toast("只能录一个视频哦~")
+//				 	}
+//				 })
+//				 
+//				 document.getElementById("uploadvideo").addEventListener('tap',function(){
+//				 	var formData = new FormData($("#uploadForm")[0]);
+//				 	alert(formData.size)
+//					formData.append("access_token",localStorage.getItem("token"))
+////					if(file !=""&&file !=undefined){
+////						origin_name=file.name
+//						$.ajax({
+//						type:"post",
+//						url:basepath+"api/v1.0/file/upload",
+//						data:formData,
+//						async: false,
+//						contentType:false,
+//						processData:false,
+//						dataType:"json",
+//						success:function(data){
+//							alert(data.response.data) 
+//						},
+//						error:function(data){
+//							plus.nativeUI.toast("上传失败！");
+//						}
+//					});	
+//				 })
+//					
+//				 
+//				 mui("#history").on("longtap","li",function(){
+//			 		mui.confirm("是否删除该视频？","",["取消","删除"],function(e){
+//						if(e.index==1){
+//							cleanHistory()
+//							}
+//						})
+//					})
+				 
+
+			     //提交反馈
+			        var titleBox = doc.getElementById('title');
+					var categoryBox = doc.getElementById('category');
+					var textareaBox = doc.getElementById('textarea');
+					var toBox = doc.getElementById('to_name');
+					var tonoBox = doc.getElementById('to_no');
+					var projectBox = doc.getElementById('project_no');
+					var newguide_submitButton = doc.getElementById("newguide_submit");
+					var newguide_cancelButton = doc.getElementById('newguide_cancel');
+					
+					newguide_submitButton.addEventListener('tap', function(event) {
+						
+						if(titleBox.value==""){
+							plus.nativeUI.toast("please enter title")
+						}else if(categoryBox.innerText==""){
+							plus.nativeUI.toast("please select category")
+						}else if(textareaBox.value==""){
+							plus.nativeUI.toast("please enter description")
+						}else if(toBox.value==""){
+							plus.nativeUI.toast("please select troubleshooter")
+						}else{
+							var wt  = plus.nativeUI.showWaiting("loading...");
+							getimgbase64();
+							
+							$.ajax({
+							type: "post",
+							url: basepath+"api/v1.0/ptos",
+							data:{
+								"access_token":localStorage.getItem("token"),
+								"title":titleBox.value,
+								"category":categoryBox.innerText,
+								"context":textareaBox.value,
+								"images_list":JSON.stringify(images_array),
+								"project_no":projectBox.value,
+								"to_name":toBox.innerText,
+								"to_no":tonoBox.innerText,
+								"result":"",
+							},
+							async: false,
+							dataType:"json",//如果返回的是str，那么这个地方必须用text，用json报错
+							success: function(data) {
+								if (data.response.success=="1")
+								{	
+									wt.close();
+									plus.nativeUI.toast("problem feedback succeed");
+									mui.back();
+									
+								}else{
+									plus.nativeUI.toast("problem feedback failed");
+								}
+							},
+							error: function() {
+								plus.nativeUI.toast("server error!");
+							}
+						});
+						
+						$.ajax({
+						type: "get",
+						url: basepath+"api/v1.0/msgsend?access_token="+localStorage.getItem("token")+"&name="+toBox.innerText+"&job_no="+tonoBox.innerText,
+						async: false,
+						dataType:"json",//如果返回的是str，那么这个地方必须用text，用json报错
+						success: function(data) {
+							if (data.response.success=="1")
+							{	
+								plus.nativeUI.toast("message to "+toBox.innerText+"~"+"succeed");
+							}else{
+								plus.nativeUI.toast("message failed！");
+							}
+						},
+						error: function() {
+							plus.nativeUI.toast("server error!");
+						}
+					});
+			
+						}
+						});
+
+			   newguide_cancelButton.addEventListener('tap',function(event){
+			   	mui.back();
+			   })
+			
+				});
+			})(mui, document);
+		</script>
+	</body>
+</html>
