@@ -345,18 +345,6 @@
 										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time+"</span>"+
 										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
 		    	
-						//将点赞和评论以footer的形式放在每个评论卡片的下方
-//						var footer_div = document.createElement("li")
-//						footer_div.className="mui-card-footer"
-//						var comment_a = document.createElement("a")
-//						comment_a.className="mui-icon-extra mui-icon-extra-comment"
-//						comment_a.id="icon_comment"
-//						var time_span = document.createElement("span")
-//						time_span.innerHTML=value.add_time+"&nbsp;&nbsp;"
-//						footer_div.appendChild(time_span)
-//						footer_div.appendChild(comment_a)
-//						li.appendChild(footer_div)
-						
 						comment_list.appendChild(li)
 						
 						
@@ -369,23 +357,10 @@
 							kid_li.setAttribute("_like_amounts",value.like_amounts)
 							kid_li.className="mui-table-view-cell-kid";
 							kid_li.style.backgroundColor="#C7C7CC"
-//							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"</span>"+'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'+"<br>"+"<span id='com_text'>"+value.text+"</span>"
-//							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"</span>"+"<br>"+"<span id='com_text'>"+value.text+"</span>"
 							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"@"+value.to_user_name+"</span>"
 										+"<br>"+"<span id='com_text'>"+value.text
 										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time.split('.')[0]+"</span>"+
 										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
-//							var kid_footer_div = document.createElement("div")
-//							kid_footer_div.className="mui-card-footer"
-//							kid_footer_div.style.backgroundColor="#C7C7CC"
-//							var comment_a = document.createElement("a")
-//							comment_a.className="mui-icon-extra mui-icon-extra-comment"
-//							comment_a.id="icon_comment"
-//							var time_span = document.createElement("span")
-//							time_span.innerHTML=value.add_time.split(".")[0]+"&nbsp;&nbsp;"
-//							kid_footer_div.appendChild(time_span)
-//							kid_footer_div.appendChild(comment_a)
-//							kid_li.appendChild(kid_footer_div)
 							comment_list.appendChild(kid_li)
 						})
 						})
