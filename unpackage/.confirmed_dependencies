@@ -30,12 +30,16 @@
 			"ptos/ptos_detail.html",
 			"ptos/myptos.html",
 			"ptos/myanswerptos.html",
-			"ptos/like_base.html"
+			"ptos/like_base.html",
+			"ptos/ptos_add_all.html",
+			"ptos/ptos_detail_all.html",
+			"ptos/ptos_unfinished.html"
 		]
 	},
 	"admin/manage_user.html": {
 		"refer": [
-			"admin/users_list.html"
+			"admin/users_list.html",
+			"admin/add_user.html"
 		]
 	},
 	"ptos/myanswerptos.html": {
@@ -50,7 +54,8 @@
 	},
 	"ptos/ptos_search_content.html": {
 		"refer": [
-			"ptos/ptos_detail.html"
+			"ptos/ptos_detail.html",
+			"ptos/ptos_detail_all.html"
 		]
 	},
 	"ptos/myptos.html": {
@@ -106,7 +111,8 @@
 		"refer": [
 			"selfsetting/selfsetting.html",
 			"selfinformation/feedback.html",
-			"analysis/analysis.html"
+			"analysis/analysis.html",
+			"admin/manage_user.html"
 		]
 	},
 	"inforshare/like_base.html": {
@@ -132,7 +138,18 @@
 	},
 	"ptos/like_list.html": {
 		"refer": [
-			"ptos/ptos_detail.html"
+			"ptos/ptos_detail.html",
+			"ptos/ptos_detail_all.html"
+		]
+	},
+	"ptos/ptos_unfinished.html": {
+		"refer": [
+			"ptos/ptos_detail_all.html"
+		]
+	},
+	"admin/users_list.html": {
+		"refer": [
+			"admin/user_search.html"
 		]
 	}
 }

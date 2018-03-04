@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" class="picture">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>detail_ptos</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <link rel="stylesheet" href="../css/image_preview.css" />
+        <link rel="stylesheet" href="../css/comment.css" />
+        <link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+        <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		<style type="text/css">
+			body {
+				background-color:#efeff4;
+			}
+		    div{
+		    	background-color: #EEEEEE;
+		    }
+		    .mui-table-view-cell-kid{
+		    	top: 0;
+				margin-left: 20px;
+				margin-right: 20px;
+		    }
+		    .mui-icon-extra-like{
+		    	font-size: 20px;
+		    }
+		    .mui-icon-extra-comment{
+		    	font-size: 20px;
+		    }
+		    .ptos-nolike{
+		    	color: #8F8F94;
+		    }
+		    .ptos-like{
+		    	color: red;
+		    }
+		    #icon_comment{
+		    	margin-left: 10px;
+		    }
+		    #icon_like_right{
+		    	position: relative;
+		    	background-color: white;
+		    	float:right;
+		    	right:10px
+		    	/*图标靠右浮动*/
+		    }
+		    #dianzan{
+		    	position: relative;
+		    	background-color: white;
+		    	float:right;
+		    	right:-30px
+		    }
+		    .mui-icon-plusempty{
+				font-size: 70px;
+				color:#FF0000 ;
+				position: fixed;
+				bottom: 30px;
+				left:20px
+			}
+		   
+		</style>
+
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			 
+			 <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			 <!--<a class="mui-icon mui-icon-reload mui-pull-right" id="refresh"><div style="margin:-18px 10px 10px 30px; font: '楷体';font-size: 18px;">刷新</div></a>-->
+			<h1 class="mui-title">FAQ detail</h1>
+			<span class="mui-pull-right" style="margin-top: 10px;">
+				<a class="ptos-nolike" id="like" ><span class="mui-icon-extra mui-icon-extra-heart-filled"></span></a>
+			</span>
+		</header>
+		
+		<div class="mui-content" >
+        <h3 style="text-align:center"></h3>    
+        <span >feedback title:</span>&nbsp;&nbsp;&nbsp;<span id="title"></span>
+        <br>
+        <span >author:</span>&nbsp;&nbsp;&nbsp;<span id="author"></span>
+        <br>
+        <!--<span >troubleshooter:</span>&nbsp;&nbsp;&nbsp;<span id="to_name"></span>   
+        <br />-->
+        <span >category:</span>&nbsp;&nbsp;&nbsp;<span id="category"></span>   
+        <br />
+        <span >add time:</span>&nbsp;&nbsp;&nbsp;<span id="add_time"></span>   
+        <br />
+        <span >description:</span>&nbsp;&nbsp;&nbsp;<span id="ptos_text"></span>
+        <br />
+        <p style="display: block;" id="images_list">
+		</p>
+		<span id="comment_area">solve area：</span>
+		<div id="comments" class="comment">
+			<ul class="mui-table-view mui-table-view-chevron" id="comments_list">
+				
+			</ul>
+		</div>
+		<span class="mui-icon mui-icon-plusempty" id="comment_btn"></span>
+		<!--发起人如果没有结题，则出现作答区-->
+		<div id="ptos_result" style="display: none;">
+			<hr/>
+			<span>answer is ok?:</span>
+			<br />
+			<button id="ok">yes</button>
+			<button id="help">helpful</button>
+			<button id="fail">no</button>
+			<br/>
+			<br/>
+			<div align="center">
+				<button id="pto_result_answer" class="mui-btn mui-btn-primary" type="button" onclick="return true;">submit</button>
+			</div>
+		</div>
+		<!--发起人已经结题，则出现反馈结果-->
+		<!--<hr/>-->
+		<br />
+		<div id="pto_result_isok" style="display: none;">
+			<span>FAQ situation:</span>&nbsp;&nbsp;&nbsp;<span id="result" style="color: red"></span>
+		</div>
+		</div>
+		
+		<script src="../js/app.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/basepath.js"></script>
+		<script src="../js/add_picture.js"></script>
+		<script src="../js/mui.view.js "></script>
+		<script src="../js/mui.zoom.js"></script>
+		<script src="../js/mui.previewimage.js"></script>
+		<script type="text/javascript" src="../js/mui.picker.min.js" ></script>
+		<script>
+			(function($,doc){
+				mui.init({ 
+					gestureConfig:{
+					   tap: true, //默认为true
+					   longtap: true, //默认为false
+					  }
+				});
+				mui.previewImage();//可以预览 放大 缩小
+				$.plusReady(function(){
+					
+					var title = document.getElementById('title');
+			        var author = document.getElementById('author');
+//					var to_name = document.getElementById('to_name');
+			        var category = document.getElementById('category');
+					var add_time = document.getElementById('add_time');
+					var ptos_text = document.getElementById("ptos_text");
+					var images_list = document.getElementById("images_list")
+					var images_list_answer = document.getElementById("images_list_answer")
+					var result = document.getElementById("result")
+					
+					
+					//获取前一个页面传过来的值
+					var self = plus.webview.currentWebview();//必须用plusReady 来获取前面传过来的值
+					var _ptos_id =self.ptos_id
+					var _title =self.ptos_title
+					var _author = self.editor_name
+					var _editor_jobno = self.editor_jobno
+					var _to_name = self.ptos_to_name
+					var _to_no = self.ptos_to_no
+					var _category = self.ptos_category
+					var _add_time = self.add_time
+					var _except_time = self.except_time
+					var _ptos_text = self.ptos_context
+					var _images_list = self.ptos_images
+					var _ptos_result = self.ptos_result
+					
+					title.innerHTML=_title
+					author.innerHTML=_author
+//					to_name.innerHTML=_to_name
+					category.innerHTML=_category
+					add_time.innerHTML=_add_time
+					ptos_text.innerHTML=_ptos_text
+					result.innerHTML =_ptos_result
+					
+					//显示图片
+					_images_list=_images_list.split(",")
+					var images_amounts = _images_list.length
+					for(i=0;i<images_amounts;i++){
+						var img = document.createElement("img")
+						img.src = _images_list[i]
+						img.setAttribute("style","width: -webkit-fill-available")
+						img.setAttribute("data-preview-src","")
+						img.setAttribute("data-preview-group","1")
+						img.style="width: -webkit-fill-available"
+						images_list.appendChild(img)
+					}
+					
+					//显示当前出差任务下的评论
+					var comment_list = document.getElementById("comments_list")
+					mui.ajax({
+					type:"get",
+					url:basepath+"api/v1.0/comment?access_token="+localStorage.getItem('token')+"&comment_type=ptos&text_id="+_ptos_id+"&comment_status=father",
+					async:true,
+					dataType:"json",
+					success:function(data){
+						if(data.response.data==""||data.response.data==NaN||data.response.data==undefined){
+							document.getElementById("comment_area").style.display="none"
+						}
+						mui.each(data.response.data,function(key,value){
+						var li = document.createElement("li")
+						li.className="mui-table-view-cell"
+//						li.className="mui-card"
+						li.setAttribute("to_user_id",value.user_id)
+						li.setAttribute("to_user_name",value.add_user_name)
+						li.setAttribute("father_comment_id",value._id)
+						li.setAttribute("comment_id",value._id)
+						li.setAttribute("_like_amounts",value.like_amounts)
+						li.setAttribute("_like_users",value.like_users)
+						li.setAttribute("comment_text",value.text)
+						li.setAttribute("comment_add_time",value.add_time)
+						
+						li.innerHTML="<span id='com_name'>"+value.add_user_name+"</span>"+
+										'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'
+										+"&nbsp;"+"<span id='dianzan'>"+li.getAttribute("_like_amounts")+"</span>"
+										+"<br>"+"<span id='com_text'>"+value.text
+										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time+"</span>"+
+										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
+		    	
+						comment_list.appendChild(li)
+						
+						
+						mui.each(value.childen_comment_ids,function(key,value){
+							var kid_li = document.createElement("li");
+							kid_li.setAttribute("to_user_id",value.user_id)
+							kid_li.setAttribute("to_user_name",value.add_user_name)//此处注意逻辑
+							kid_li.setAttribute("father_comment_id",li.getAttribute("father_comment_id"))
+							kid_li.setAttribute("comment_id",value._id)
+							kid_li.setAttribute("_like_amounts",value.like_amounts)
+							kid_li.className="mui-table-view-cell-kid";
+							kid_li.style.backgroundColor="#C7C7CC"
+							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"@"+value.to_user_name+"</span>"
+										+"<br>"+"<span id='com_text'>"+value.text
+										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time.split('.')[0]+"</span>"+
+										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
+							comment_list.appendChild(kid_li)
+						})
+						})
+					}
+					});
+					
+					//提交评论
+					comment_btn = document.getElementById("comment_btn")
+					comment_btn.addEventListener('tap',function(event){
+						var btnArray = ['cancel', 'submit'];
+							mui.prompt(' ', 'enter your reply...', 'ZhihuiSMB', btnArray, function(e) {
+								if (e.index == 1) {
+									if(e.value ==""){
+							plus.nativeUI.toast("enter comment text~")
+						}else{
+								mui.ajax({
+								type:"post",
+								url:basepath+"api/v1.0/comment",
+								data:{
+									"access_token":localStorage.getItem("token"), 
+									"comment_type":"ptos",
+									"text_id":_ptos_id,
+									"user_id":localStorage.getItem("job_no"),
+									"text":e.value,
+									"to_user_id":"",
+									"to_user_name":"",
+									"father_comment_id":"",
+									"comment_status":"father",
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+								 	if (data.response.success == "1"){
+											plus.nativeUI.toast("comment succeed~")
+											plus.webview.getWebviewById("ptos_detail_all").reload()
+										}else{
+											plus.nativeUI.toast("comment failed！")
+										}   
+								}
+							 });	
+							}
+									info.innerText = 'reply succeed';
+								} else {
+									
+								}
+							})
+					})
+					
+					
+					//增加回复
+					mui("#comments_list").on('tap','.mui-icon-extra-comment',function(e){
+							var to_user_id_f = this.parentNode.getAttribute("to_user_id")
+							var to_user_name_f = this.parentNode.getAttribute("to_user_name")
+							var father_comment_id_f = this.parentNode.getAttribute("father_comment_id")
+							e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
+							var btnArray = ['cancel', 'submit'];
+							mui.prompt(' ', 'enter your reply...', 'ZhihuiSMB', btnArray, function(e) {
+								if (e.index == 1) {
+									mui.ajax({
+									type:"post",
+									url:basepath+"api/v1.0/comment",
+									data:{
+										"access_token":localStorage.getItem("token"), 
+										"comment_type":"ptos",
+										"text_id":_ptos_id,
+										"user_id":localStorage.getItem("job_no"),
+										"text":e.value,
+										"to_user_id":to_user_id_f,
+										"to_user_name":to_user_name_f,//加上this.parentNode即可获得父辈的信息
+										"father_comment_id":father_comment_id_f,
+										"comment_status":"kid",
+									},
+									async:true,
+									dataType:"json",
+									success:function(data){
+//										console.info(JSON.stringify(data.response))
+									 	if (data.response.success == "1"){
+												plus.nativeUI.toast("comment succeed~")
+												plus.webview.getWebviewById("ptos_detail_all").reload()
+											}else{
+												plus.nativeUI.toast("comment failed！")
+											}   
+									}
+								 });
+									info.innerText = 'reply succeed';
+								} else {
+									
+								}
+							})
+							return false;//return false后，tap事件不再冒泡到li上.
+					});
+					
+					//点赞
+					mui("#comments_list").on('tap','.mui-icon-extra-like',function(e){
+							var like_comment_id = this.parentNode.getAttribute("comment_id")
+							var user_name = this.parentNode.getAttribute("to_user_name")
+							var comment_text = this.parentNode.getAttribute("comment_text")
+							var like_users = this.parentNode.getAttribute("_like_users")
+							var like_amounts = this.parentNode.getAttribute("_like_amounts")
+							var comment_add_time = this.parentNode.getAttribute("comment_add_time")
+							var amounts_like =parseInt(like_amounts)+1 
+							
+							if(like_users.indexOf(localStorage.getItem("job_no"))>=0){
+								mui.toast("Allow only one agreement")
+							}else{
+								var obj=this;//保存当前this对象 
+								mui.ajax({
+									type:"PUT",
+									url:basepath+"api/v1.0/comment/like_amount",
+									data:{
+										"access_token":localStorage.getItem("token"), 
+										"user_id":localStorage.getItem("job_no"), 
+										"comment_id":like_comment_id,
+										"type":"1",
+									},
+									async:true,
+									dataType:"json",
+									success:function(data){
+									 	if (data.meta.code == "200"){
+												plus.nativeUI.toast("agree succeed~")
+												obj.parentNode.innerHTML="<span id='com_name'>"+user_name+"</span>"+
+													'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'
+													+"&nbsp;"+"<span id='dianzan' style='right:-30px'>"+amounts_like+"</span>"
+													+"<br>"+"<span id='com_text'>"+comment_text+"</span>"
+													+"</br>"+"</span>"+"<span id='com_time'>"+comment_add_time+"</span>"+
+													"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment'></span>"
+											}else{
+												if(data.response.exception.indexOf("Allow only one agreement")){
+													mui.toast("Allow only one agreement")
+												}else{
+													mui.toast("server error")
+												}
+											}   
+									}
+								 });
+							}
+							
+							return false;//return false后，tap事件不再冒泡到li上.
+					});
+					
+					//评价反馈结果
+					
+					if(_ptos_result!="unfinished"){
+						document.getElementById("pto_result_isok").style.display="block"
+					}else{
+						
+						
+						mui.ajax({
+							type:"get",
+							url:basepath+"api/v1.0/comment?access_token="+localStorage.getItem('token')+"&comment_type=ptos&text_id="+_ptos_id+"&comment_status=father",
+							async:true,
+							dataType:"json",
+							success:function(data){
+								if(data.response.data!=""){
+									if(localStorage.getItem("job_no")==_editor_jobno){
+										document.getElementById("ptos_result").style.display="block"
+									}
+								}
+							}
+						});
+						
+						
+						
+						
+						
+					}
+					var pto_result_ok = document.getElementById("ok")
+					var pto_result_help = document.getElementById("help")
+					var pto_result_fail = document.getElementById("fail")
+					
+					pto_result_ok.addEventListener('tap',function(){
+						pto_result_ok.style.backgroundColor="green"
+						pto_result_help.style.backgroundColor=""
+						pto_result_fail.style.backgroundColor=""
+						mui.toast("answer：yes！")
+						localStorage.setItem("pto_result","yes")
+					})
+					
+					pto_result_help.addEventListener('tap',function(){
+						pto_result_help.style.backgroundColor="yellow"
+						pto_result_ok.style.backgroundColor=""
+						pto_result_fail.style.backgroundColor=""
+						mui.toast("answer：helpful！")
+						localStorage.setItem("pto_result","helpful")
+					})
+					
+					pto_result_fail.addEventListener('tap',function(){
+						pto_result_fail.style.backgroundColor="red"
+						pto_result_ok.style.backgroundColor=""
+						pto_result_help.style.backgroundColor=""
+						mui.toast("answer：no！")
+						localStorage.setItem("pto_result","no")
+					})
+					
+					document.getElementById("pto_result_answer").addEventListener('tap',function(){
+						$.ajax({
+							type: "PUT",
+							url: basepath+"api/v1.0/ptos/add_result",
+							data:{
+								"access_token":localStorage.getItem("token"),
+								"ptos_id":_ptos_id,
+								"result":localStorage.getItem("pto_result"),
+							},
+							async: false,
+							dataType:"json",//如果返回的是str，那么这个地方必须用text，用json报错
+							success: function(data) {
+								if (data.response.success=="1")
+								{	
+									plus.nativeUI.toast("succeed");
+									mui.back();
+									
+								}else{
+									plus.nativeUI.toast("failed");
+								}
+							},
+							error: function() {
+								plus.nativeUI.toast("server error!");
+							}
+						});
+						
+					})
+					
+					
+					//收藏操作
+					like_style = document.getElementById("like")
+					mui.ajax({
+						type:"get",
+						url:basepath+"api/v1.0/like?access_token="+localStorage.getItem("token")+"&user_id="+localStorage.getItem("job_no"),
+						async:true,
+						dataType:"json",
+						success:function(data){
+							ptos_like = data.response.data[0].ptos_like//注意data中list和dict的区别
+							if(ptos_like.indexOf(_ptos_id)>=0){
+								like_style.className="ptos-like"
+							}else{
+								like_style.className="ptos-nolike"
+							}
+							
+						},
+						error: function() {
+							plus.nativeUI.toast("server error!");
+						}
+						
+					})
+					
+					like_style.addEventListener('tap',function(){
+						if(like_style.className=="ptos-nolike"){//注意复制和判断是否相等
+							like_style.className="ptos-like"
+							mui.ajax({
+								type:"PUT",
+								url:basepath+"api/v1.0/like/alter",
+								data:{
+									"access_token":localStorage.getItem("token"),
+									"user_id":localStorage.getItem("job_no"),
+									"type":"ptos",
+									"like_id":_ptos_id,
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+									if(data.response.success == "1"){
+										plus.nativeUI.toast("like")
+									}else{
+										plus.nativeUI.toast("operation failed")
+									}
+								},
+								error:function(){
+									plus.nativeUI.toast("server error!")
+								}
+							})
+							
+							
+						}else{
+							like_style.className = "ptos-nolike"
+							mui.ajax({
+								type:"put",
+								url:basepath+"api/v1.0/like/alter",
+								data:{
+									"access_token":localStorage.getItem("token"),
+									"user_id":localStorage.getItem("job_no"),
+									"type":"ptos",
+									"like_id":_ptos_id,
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+									if(data.response.success == "1"){
+										plus.nativeUI.toast("unlike")
+									}else{
+										plus.nativeUI.toast("operation failed")
+									}
+								},
+								error:function(){
+									plus.nativeUI.toast("server error!")
+								}
+							})
+							
+						}
+					})
+					
+//					//长按评论删除
+//					 mui("#comments_list").on("longtap","li",function(){
+//					 	comment_id=this.getAttribute("comment_id")
+//					 	user_id = this.getAttribute("user_id")
+//					 	var btnArray = ['否', '是'];
+//						mui.confirm('删除此评论？', '', btnArray, function(e) {
+//							if (e.index == 1) {
+//								mui.ajax({
+//									type:"delete",
+//									url:basepath+"api/v1.0/comment/"+comment_id+"?access_token="+localStorage.getItem("token"),
+//									data:{
+//										"user_id":localStorage.getItem("mobile")
+//									},
+//									async:true,
+//									dataTyoe:"json",
+//									success:function(data){
+//										if(data.response.success=="1"){
+//											plus.nativeUI.toast("该评论已删除~")
+//											plus.webview.getWebviewById("detail_inforguide").reload()
+//										}else if(data.response.success=="0"){
+//											plus.nativeUI.toast("您无权限删除此评论！")
+//										}else{
+//											plus.nativeUI.toast("出现异常，请重试~")
+//										}
+//									},
+//								});
+//							} else {
+//							   
+//							}
+//						})
+//					 })
+//						 	
+//		   		        },
+//					});
+					
+				})
+				
+			}(mui,document))
+			
+		</script>
+		
+	</body>
+</html>

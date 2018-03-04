@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>news</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<style>
+			html,
+			body {
+				background-color:#efeff4;
+			}
+		    .mui-table-view-cell{
+		    	border-radius: 30px;
+		    	margin-left: 40px;
+		    	margin-right: 0px;
+		    	background-color:#D8D8D8;
+		    	margin-bottom: 10px;
+		    }
+		    .mui-icon-checkmarkempty{
+		      margin-left: 10px;
+		      background-color: #007AFF;
+		      border-radius: 15px;
+		      float:left;/*先将前面的符号改成浮动型的再改margin-top就可以和数据对齐了*/
+		      margin-top:50px;
+		    }
+		    .mui-table-view-chevron{
+		    	border-bottom:hidden;
+		    }
+		    .icon-daiwancheng{
+		      margin-left: 10px;
+		      background-color:#CF2D28;
+		      border-radius: 15px;
+		      float:left;
+		      margin-top:50px;
+		    }
+		    /*#pullrefresh{
+		    	margin:50px 0px 0px 0px;//苹果版本
+		    }*/
+		   
+		   #ptos_search{
+		   	font-size: 15px;
+		   	
+		   }
+		   #sign_choose{
+				width:170px;
+			}
+		   
+			.unread{
+		   	  height: 10px;
+		   	  width: 10px;
+		      margin-right: 0px;
+		      background-color:red;
+		      border-radius: 15px;
+		      float:right;/*先将前面的符号改成浮动型的再改margin-top就可以和数据对齐了*/
+		      margin-top:5px;
+		    }
+		   
+		</style>
+
+	</head>
+	 
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			 
+			 <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			 <!--<a class="mui-icon mui-icon-reload mui-pull-right" id="refresh"><div style="margin:-18px 10px 10px 30px; font: '楷体';font-size: 18px;">刷新</div></a>-->
+			<h1 class="mui-title">FAQs unfinished</h1>
+			
+		</header>
+		
+		<div class="mui-content" >
+        <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron" id="list">
+					
+				</ul>
+			</div>
+		</div>
+		
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script type="text/javascript" src="../js/copy.js" ></script>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script>
+		(function($,doc){
+			$.plusReady(function(){
+				mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						contentrefresh: 'loading...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			var list = document.getElementById("list")
+			var count = -1;
+			function pullupRefresh() {
+				count = count +1
+				setTimeout(function() {
+					mui.ajax({
+					type: "get",//后面必须加逗号！！！！！！！！
+					url: basepath+"api/v1.0/ptos?access_token="+localStorage.getItem("token")+"&result=unfinished"+"&page_size=10&page="+(count+1),
+					async:true,
+					dataType:"json",
+					success:function(data){
+						faqs_unfinished = data.response.data
+						if(faqs_unfinished ==""){
+							plus.nativeUI.toast("no unfinished FAQs")
+							mui.back()
+						}
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.response.data ==""||null));	
+						unread_msg = data.response.unread.ptos_unread
+						mui.each(data.response.data,function(key,value){
+						var li = document.createElement("li")
+						li.className = "mui-table-view-cell"
+						li.setAttribute("ptos_id",value._id);
+						li.setAttribute("editor_id",value.add_user_id);
+						li.setAttribute("editor_jobno",value.add_user_jobno);
+						li.setAttribute("editor_name",value.add_user_name);
+						li.setAttribute("add_time",value.add_time);
+						li.setAttribute("except_time",value.except_time);
+						li.setAttribute("ptos_title",value.title);
+						li.setAttribute("ptos_to_no",value.to_no);
+						li.setAttribute("ptos_to_name",value.to_name);
+						li.setAttribute("ptos_images",value.images[0])
+						li.setAttribute("ptos_context",value.context)
+						li.setAttribute("ptos_category",value.category)
+						li.setAttribute("ptos_result",value.result)
+						if(unread_msg.indexOf(value._id)>=0){
+							li.innerHTML ='<span class="unread"></span>'+"editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
+									"category："+value.category+"<br>"+"title："+value.title ;
+						}else{
+							li.innerHTML = "editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
+									"category："+value.category+"<br>"+"title："+value.title ;
+						}
+						var read_text="editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
+									"category："+value.category+"<br>"+"title："+value.title ;
+                        
+						var icon = document.createElement("icon")
+						
+						if(value.result==""){
+							icon.className="mui-icon iconfont icon-daiwancheng"	
+						}else{
+							icon.className="mui-icon mui-icon-checkmarkempty"						
+						}
+						list.appendChild(icon)
+                        list.appendChild(li)
+                        li.setAttribute("li_text",read_text)       
+                       
+					})
+					mui("#list").on('tap','li',function(){
+						var ptos_id = this.getAttribute("ptos_id")
+						var editor_id = this.getAttribute("editor_id")
+						var editor_name = this.getAttribute("editor_name")
+						var editor_jobno = this.getAttribute("editor_jobno")
+						var add_time = this.getAttribute("add_time")
+						var except_time = this.getAttribute("except_time")
+						var ptos_title = this.getAttribute("ptos_title")
+						var ptos_to_no = this.getAttribute("ptos_to_no")
+						var ptos_to_name = this.getAttribute("ptos_to_name")
+						var ptos_images = this.getAttribute("ptos_images")
+						var ptos_context = this.getAttribute("ptos_context")
+						var ptos_category = this.getAttribute("ptos_category")
+						var ptos_result= this.getAttribute("ptos_result")
+						var li_text = this.getAttribute("li_text")
+						
+						mui.openWindow({
+					    url:"ptos_detail_all.html",
+					    id:"ptos_detail_all",
+					    
+					    extras:{
+					    	ptos_id:ptos_id,
+					    	editor_id:editor_id,
+					    	editor_name:editor_name,
+					    	editor_jobno:editor_jobno,
+					    	add_time:add_time,
+					    	except_time:except_time,
+					    	ptos_title:ptos_title,
+					    	ptos_to_no:ptos_to_no,
+					    	ptos_to_name:ptos_to_name,
+					    	ptos_images:ptos_images,
+					    	ptos_context:ptos_context,
+					    	ptos_category :ptos_category,
+					    	ptos_result:ptos_result,
+					    }
+					     
+						})
+						this.innerHTML=li_text;//点击查看详情即为已读
+						
+						$.ajax({
+							type: "PUT",
+							url:basepath +"api/v1.0/msgunread/minus",
+							data:{
+								"access_token":localStorage.getItem("token"),
+								"user_id":localStorage.getItem("job_no"),
+								"type":"ptos",
+								"msg_id":ptos_id,
+								
+							},
+							async: true,
+							dataType:"json",
+							success: function(data) {
+							},
+							error: function() {
+								plus.nativeUI.toast("server error!");
+							}
+						});
+	                  });
+	                 //长按复制 
+	                 mui("#list").on("longtap","li",function(){
+	                 	ptos_text = this.getAttribute("li_text")
+	                 	copy(ptos_text)
+	                 })
+						
+					},
+					});
+				}, 100);
+				
+			}
+			})
+
+			/*
+			 下拉刷新(以从新加载本页的方法来实现)
+			 * */
+			
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+
+		}(mui,document))
+		</script>
+	</body>
+</html>

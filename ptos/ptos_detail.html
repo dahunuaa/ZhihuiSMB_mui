@@ -41,11 +41,6 @@
 		</header>
 		
 		<div class="mui-content" >
-		
-		<!--<p>
-		 <img src="../img/schaeffler.png" data-preview-src="" data-preview-group="1" />
-		</p>-->
-		
         <h3 style="text-align:center"></h3>    
         <span >feedback title:</span>&nbsp;&nbsp;&nbsp;<span id="title"></span>
         <br>
@@ -192,11 +187,10 @@
 					for(i=0;i<images_amounts;i++){
 						var img = document.createElement("img")
 						img.src = _images_list[i]
+						img.setAttribute("style","width: -webkit-fill-available")
+						img.setAttribute("data-preview-src","")
+						img.setAttribute("data-preview-group","1")
 						img.style="width: -webkit-fill-available"
-//						img["data-preview-src"]=""
-//						img["data-preview-group"]="1"
-//						img.data-preview-src=""
-//						img.data-preview-group="2"
 						images_list.appendChild(img)
 					}
 					

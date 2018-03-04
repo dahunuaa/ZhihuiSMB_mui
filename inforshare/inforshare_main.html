@@ -265,37 +265,37 @@
 						});
 	                  });
 	                 //长按删除（管理员）
-//	                 mui("#list").on("longtap","li",function(){
-//	                 	ptos_id = this.getAttribute("ptos_id")
-//	                 	if("admin"==localStorage.getItem("scope")){
-//	                 		mui.confirm("是否删除该记录？","",["取消","删除"],function(e){
-//							if(e.index==1){
-//								mui.ajax({
-//								type:"delete",
-//								url:basepath+"api/v1.0/ptos/"+ptos_id+"?access_token="+localStorage.getItem("token"),
-//								data:{
-//									
-//								},
-//								async:true,
-//								dataType:"json",
-//								success:function(data){
-//									if(data.response.success =="1")
-//									{
-//										plus.nativeUI.toast("已删除该记录")
-//										plus.webview.currentWebview().reload()
-//									}else{
-//										plus.nativeUI.toast("删除失败，请重试！")
-//									}
-//								},
-//								error:function(){
-//									plus.nativeUI.toast("请求服务器失败!");
-//								}
-//							})
-//								
-//							}
-//						})
-//	                 	}
-//	                 })
+	                 mui("#list").on("longtap","li",function(){
+	                 	infor_id = this.getAttribute("infor_id")
+	                 	infor_editor = this.getAttribute("infor_editor")
+	                 	if("admin"==localStorage.getItem("scope")||infor_editor==localStorage.getItem("job_no")){
+	                 		mui.confirm("delete this FAQ？","",["cancel","delete"],function(e){
+							if(e.index==1){
+								mui.ajax({
+								type:"delete",
+								url:basepath+"api/v1.0/inforshare/"+infor_id+"?access_token="+localStorage.getItem("token"),
+								data:{
+									
+								},
+								async:true,
+								dataType:"json",
+								success:function(data){
+									if(data.response.success =="1")
+									{
+										plus.nativeUI.toast("delete succeed")
+										plus.webview.currentWebview().reload()
+									}else{
+										plus.nativeUI.toast("failed")
+									}
+								},
+								error:function(){
+									plus.nativeUI.toast("server error!");
+								}
+							})
+							}
+						})
+	                 	}
+	                 })
 						
 					},
 					});

@@ -238,14 +238,18 @@
 					"ptos/ptos_detail.html",
 					"ptos/myptos.html",
 					"ptos/myanswerptos.html",
-					"ptos/like_base.html"
+					"ptos/like_base.html",
+					"ptos/ptos_add_all.html",
+					"ptos/ptos_detail_all.html",
+					"ptos/ptos_unfinished.html"
 				],
 				"priority": 0
 			},
 			"admin/manage_user.html": {
 				"resources": [],
 				"refer": [
-					"admin/users_list.html"
+					"admin/users_list.html",
+					"admin/add_user.html"
 				],
 				"priority": 0
 			},
@@ -266,7 +270,8 @@
 			"ptos/ptos_search_content.html": {
 				"resources": [],
 				"refer": [
-					"ptos/ptos_detail.html"
+					"ptos/ptos_detail.html",
+					"ptos/ptos_detail_all.html"
 				],
 				"priority": 0
 			},
@@ -337,7 +342,8 @@
 				"refer": [
 					"selfsetting/selfsetting.html",
 					"selfinformation/feedback.html",
-					"analysis/analysis.html"
+					"analysis/analysis.html",
+					"admin/manage_user.html"
 				],
 				"priority": 0
 			},
@@ -365,7 +371,22 @@
 			"ptos/like_list.html": {
 				"resources": [],
 				"refer": [
-					"ptos/ptos_detail.html"
+					"ptos/ptos_detail.html",
+					"ptos/ptos_detail_all.html"
+				],
+				"priority": 0
+			},
+			"ptos/ptos_unfinished.html": {
+				"resources": [],
+				"refer": [
+					"ptos/ptos_detail_all.html"
+				],
+				"priority": 0
+			},
+			"admin/users_list.html": {
+				"resources": [],
+				"refer": [
+					"admin/user_search.html"
 				],
 				"priority": 0
 			}
@@ -388,13 +409,11 @@
 				"css/mui.picker.min.css",
 				"js/mui.view.js",
 				"js/basepath.js",
-				"admin/user_search.html",
 				"js/app.js",
 				"js/mui.picker.js",
 				"css/defined_uploadimg.css",
 				"ptos/camera.html",
 				"fonts/mui.ttf",
-				"admin/add_user.html",
 				"notice/notice_detail.html",
 				"css/mui.css",
 				"js/add_picture.js",

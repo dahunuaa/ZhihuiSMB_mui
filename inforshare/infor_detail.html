@@ -38,12 +38,6 @@
 		    #icon_comment{
 		    	margin-left: 10px;
 		    }
-		    #icon_like{
-		    	margin-left: 50px;
-		    }
-		    .mui-card-footer{
-		    	background-color: white;
-		    }
 		    #icon_like_right{
 		    	position: relative;
 		    	background-color: white;
@@ -91,26 +85,25 @@
 	        <span >category:</span>&nbsp;&nbsp;&nbsp;<span id="inforshare_type"></span>
 	        <br />
 	        <span style="border-left:20px;">content:</span>&nbsp;&nbsp;&nbsp;<span id="inforshare_text"></span>
-	        <br/>
-        	<span>file：</span><span id="file_to_download"></span>
-			<br/>
+        	<p id="p_area" style="display: none;"><span>file：</span><span id="file_to_download" ></span></p>
 			<span id="processspan">download progress：</span><span id="processtext"></span>
-			<div class="mui-button-row">
+			<div class="mui-button-row" id="btn_area" style="display: none">
 				<button id="downloadfile" class="mui-btn mui-btn-primary" type="button" onclick="return true;" >tap to download</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button id="openfile" class="mui-btn mui-btn-danger" type="button" onclick="return false;">openfile</button>
 			</div>	
+			
 			<br />
 	        <p style="display: block;" id="images_list">
 				
 	        </p>
-	        <span id="comment_area">comment area：</span>
+	        <!--<span id="comment_area">comment area：</span>
 			<div id="comments" class="comment">
 				<ul class="mui-table-view mui-table-view-chevron" id="comments_list">
 					
 				</ul>
-			</div>
+			</div>-->
 		</div>
-		<span class="mui-icon mui-icon-plusempty" id="comment_btn"></span>
+		<!--<span class="mui-icon mui-icon-plusempty" id="comment_btn"></span>-->
 		<!--<footer>
 			<div class="footer-center">
 				<textarea id='comment_text' type="text" class='input-text' placeholder="enter your comment~"></textarea>
@@ -167,23 +160,28 @@
 					var file_name = self.filename
 					var filepath = self.filepath
 					if(file_name == "null"||file_name ==""||file_name=="undefined"){
-						file_name = "无"
+						file_name = "no file"
 						document.getElementById("processspan").style.display="none"
-						document.getElementById("downloadfile").style.display ="none"
-						document.getElementById("openfile").style.display="none"
-					}				
+//						document.getElementById("downloadfile").style.display ="none"
+//						document.getElementById("openfile").style.display="none"
+					}else{
+						document.getElementById("btn_area").style.display="block"
+						document.getElementById("p_area").style.display="block"
+					}
 				    inforshare_id.innerHTML=_inforshare_id
 					inforshare_title.innerHTML=_inforshare_title
 					inforshare_time.innerHTML=_time
 					inforshare_type.innerHTML=_inforshare_type
 					inforshare_editor_name.innerHTML=_inforshare_editor_name
 					inforshare_text.innerHTML=_inforshare_text
-					file_to_download.innerHTML=file_name	
+					
+					file_to_download.innerHTML=file_name
 					
 					//显示图片
-					_images_list=_images_list.split(",")
-					var images_amounts = _images_list.length
-					for(i=0;i<images_amounts;i++){
+					if(_images_list !=""||_images_list !=null||_images_list !=undefined){
+						_images_list=_images_list.split(",")
+						var images_amounts = _images_list.length
+						for(i=0;i<images_amounts;i++){
 						var img = document.createElement("img")
 						img.src = _images_list[i]
 						img.setAttribute("style","width: -webkit-fill-available")
@@ -192,6 +190,8 @@
 						images_list.appendChild(img)
 						mui.previewImage();
 					}
+					}
+					
 					
 					//收藏操作
 					like_style = document.getElementById("like")
@@ -313,228 +313,192 @@
 					
 					
 					//显示当前出差任务下的评论
-					var comment_list = document.getElementById("comments_list")
-					mui.ajax({
-					type:"get",
-					url:basepath+"api/v1.0/comment?access_token="+localStorage.getItem('token')+"&comment_type=inforshare&text_id="+_inforshare_id+"&comment_status=father",
-					async:true,
-					dataType:"json",
-					success:function(data){
-						if(data.response.data==""||data.response.data==NaN||data.response.data==undefined){
-							document.getElementById("comment_area").style.display="none"
-						}
-						mui.each(data.response.data,function(key,value){
-						var li = document.createElement("li")
-						li.className="mui-table-view-cell"
-//						li.className="mui-card"
-						li.setAttribute("to_user_id",value.user_id)
-						li.setAttribute("to_user_name",value.add_user_name)
-						li.setAttribute("father_comment_id",value._id)
-						li.setAttribute("comment_id",value._id)
-						li.setAttribute("_like_amounts",value.like_amounts)
-						li.setAttribute("_like_users",value.like_users)
-						li.setAttribute("comment_text",value.text)
-						li.setAttribute("comment_add_time",value.add_time)
-//						console.info(li.getAttribute("_like_amounts"))
-						
-						
-						li.innerHTML="<span id='com_name'>"+value.add_user_name+"</span>"+
-										'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'
-										+"&nbsp;"+"<span id='dianzan'>"+li.getAttribute("_like_amounts")+"</span>"
-										+"<br>"+"<span id='com_text'>"+value.text
-										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time+"</span>"+
-										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
-		    	
-						comment_list.appendChild(li)
-						
-						
-						mui.each(value.childen_comment_ids,function(key,value){
-							var kid_li = document.createElement("li");
-							kid_li.setAttribute("to_user_id",value.user_id)
-							kid_li.setAttribute("to_user_name",value.add_user_name)//此处注意逻辑
-							kid_li.setAttribute("father_comment_id",li.getAttribute("father_comment_id"))
-							kid_li.setAttribute("comment_id",value._id)
-							kid_li.setAttribute("_like_amounts",value.like_amounts)
-							kid_li.className="mui-table-view-cell-kid";
-							kid_li.style.backgroundColor="#C7C7CC"
-							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"@"+value.to_user_name+"</span>"
-										+"<br>"+"<span id='com_text'>"+value.text
-										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time.split('.')[0]+"</span>"+
-										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
-							comment_list.appendChild(kid_li)
-						})
-						})
-						
-					//长按评论删除
-//					 mui("#comments_list").on("longtap","li",function(){
-//					 	comment_id=this.getAttribute("comment_id")
-//					 	user_id = this.getAttribute("user_id")
-//					 	var btnArray = ['no', 'yes'];
-//						mui.confirm('delete？', '', btnArray, function(e) {
-//							if (e.index == 1) {
-//								mui.ajax({
-//									type:"delete",
-//									url:basepath+"api/v1.0/comment/"+comment_id+"?access_token="+localStorage.getItem("token"),
-//									data:{
-//										"user_id":localStorage.getItem("job_no")
-//									},
-//									async:true,
-//									dataTyoe:"json",
-//									success:function(data){
-//										if(data.response.success=="1"){
-//											plus.nativeUI.toast("it is deleted~")
-//											plus.webview.getWebviewById("infor_detail").reload()
-//										}else if(data.response.success =="0"){
-//											plus.nativeUI.toast("no permission！")
-//										}else{
-//											plus.nativeUI.toast("server error~")
-//										}
-//									},
-//								});
-//							} else {
-//							   
-//							}
+//					var comment_list = document.getElementById("comments_list")
+//					mui.ajax({
+//					type:"get",
+//					url:basepath+"api/v1.0/comment?access_token="+localStorage.getItem('token')+"&comment_type=inforshare&text_id="+_inforshare_id+"&comment_status=father",
+//					async:true,
+//					dataType:"json",
+//					success:function(data){
+//						if(data.response.data==""||data.response.data==NaN||data.response.data==undefined){
+//							document.getElementById("comment_area").style.display="none"
+//						}
+//						mui.each(data.response.data,function(key,value){
+//						var li = document.createElement("li")
+//						li.className="mui-table-view-cell"
+////						li.className="mui-card"
+//						li.setAttribute("to_user_id",value.user_id)
+//						li.setAttribute("to_user_name",value.add_user_name)
+//						li.setAttribute("father_comment_id",value._id)
+//						li.setAttribute("comment_id",value._id)
+//						li.setAttribute("_like_amounts",value.like_amounts)
+//						li.setAttribute("_like_users",value.like_users)
+//						li.setAttribute("comment_text",value.text)
+//						li.setAttribute("comment_add_time",value.add_time)
+//						
+//						li.innerHTML="<span id='com_name'>"+value.add_user_name+"</span>"+
+//										'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'
+//										+"&nbsp;"+"<span id='dianzan'>"+li.getAttribute("_like_amounts")+"</span>"
+//										+"<br>"+"<span id='com_text'>"+value.text
+//										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time+"</span>"+
+//										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
+//		    	
+//						comment_list.appendChild(li)
+//						
+//						
+//						mui.each(value.childen_comment_ids,function(key,value){
+//							var kid_li = document.createElement("li");
+//							kid_li.setAttribute("to_user_id",value.user_id)
+//							kid_li.setAttribute("to_user_name",value.add_user_name)//此处注意逻辑
+//							kid_li.setAttribute("father_comment_id",li.getAttribute("father_comment_id"))
+//							kid_li.setAttribute("comment_id",value._id)
+//							kid_li.setAttribute("_like_amounts",value.like_amounts)
+//							kid_li.className="mui-table-view-cell-kid";
+//							kid_li.style.backgroundColor="#C7C7CC"
+//							kid_li.innerHTML="<span id='com_name'>"+value.add_user_name+"@"+value.to_user_name+"</span>"
+//										+"<br>"+"<span id='com_text'>"+value.text
+//										+"</br>"+"</span>"+"<span id='com_time'>"+value.add_time.split('.')[0]+"</span>"+
+//										"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment' ></span>"
+//							comment_list.appendChild(kid_li)
 //						})
-//					 })
-						 	
-		   		        },
-					});
+//						})
+//		   		        },
+//					});
 					
 					//提交评论
-//					comment_text = document.getElementById("comment_text")
-					comment_btn = document.getElementById("comment_btn")
-					comment_btn.addEventListener('tap',function(event){
-						var btnArray = ['cancel', 'submit'];
-							mui.prompt(' ', 'enter your reply...', 'ZhihuiSMB', btnArray, function(e) {
-								if (e.index == 1) {
-									if(e.value ==""){
-							plus.nativeUI.toast("enter comment text~")
-						}else{
-								mui.ajax({
-								type:"post",
-								url:basepath+"api/v1.0/comment",
-								data:{
-									"access_token":localStorage.getItem("token"), 
-									"comment_type":"inforshare",
-									"text_id":_inforshare_id,
-									"user_id":localStorage.getItem("job_no"),
-									"text":e.value,
-									"to_user_id":"",
-									"to_user_name":"",
-									"father_comment_id":"",
-									"comment_status":"father",
-								},
-								async:true,
-								dataType:"json",
-								success:function(data){
-								 	if (data.response.success == "1"){
-											plus.nativeUI.toast("comment succeed~")
-											plus.webview.getWebviewById("infor_detail").reload()
-										}else{
-											plus.nativeUI.toast("comment failed！")
-										}   
-								}
-							 });	
-							}
-									info.innerText = 'reply succeed';
-								} else {
-									
-								}
-							})
-					})
+//					comment_btn = document.getElementById("comment_btn")
+//					comment_btn.addEventListener('tap',function(event){
+//						var btnArray = ['cancel', 'submit'];
+//							mui.prompt(' ', 'enter your reply...', 'ZhihuiSMB', btnArray, function(e) {
+//								if (e.index == 1) {
+//									if(e.value ==""){
+//							plus.nativeUI.toast("enter comment text~")
+//						}else{
+//								mui.ajax({
+//								type:"post",
+//								url:basepath+"api/v1.0/comment",
+//								data:{
+//									"access_token":localStorage.getItem("token"), 
+//									"comment_type":"inforshare",
+//									"text_id":_inforshare_id,
+//									"user_id":localStorage.getItem("job_no"),
+//									"text":e.value,
+//									"to_user_id":"",
+//									"to_user_name":"",
+//									"father_comment_id":"",
+//									"comment_status":"father",
+//								},
+//								async:true,
+//								dataType:"json",
+//								success:function(data){
+//								 	if (data.response.success == "1"){
+//											plus.nativeUI.toast("comment succeed~")
+//											plus.webview.getWebviewById("infor_detail").reload()
+//										}else{
+//											plus.nativeUI.toast("comment failed！")
+//										}   
+//								}
+//							 });	
+//							}
+//									info.innerText = 'reply succeed';
+//								} else {
+//									
+//								}
+//							})
+//					})
 					
 					
 					//增加回复
-					mui("#comments_list").on('tap','.mui-icon-extra-comment',function(e){
-							var to_user_id_f = this.parentNode.getAttribute("to_user_id")
-							var to_user_name_f = this.parentNode.getAttribute("to_user_name")
-							var father_comment_id_f = this.parentNode.getAttribute("father_comment_id")
-							e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
-							var btnArray = ['cancel', 'submit'];
-							mui.prompt(' ', 'enter your reply...', 'ZhihuiSMB', btnArray, function(e) {
-								if (e.index == 1) {
-									mui.ajax({
-									type:"post",
-									url:basepath+"api/v1.0/comment",
-									data:{
-										"access_token":localStorage.getItem("token"), 
-										"comment_type":"inforshare",
-										"text_id":_inforshare_id,
-										"user_id":localStorage.getItem("job_no"),
-										"text":e.value,
-										"to_user_id":to_user_id_f,
-										"to_user_name":to_user_name_f,//加上this.parentNode即可获得父辈的信息
-										"father_comment_id":father_comment_id_f,
-										"comment_status":"kid",
-									},
-									async:true,
-									dataType:"json",
-									success:function(data){
-//										console.info(JSON.stringify(data.response))
-									 	if (data.response.success == "1"){
-												plus.nativeUI.toast("comment succeed~")
-												plus.webview.getWebviewById("infor_detail").reload()
-											}else{
-												plus.nativeUI.toast("comment failed！")
-											}   
-									}
-								 });
-									info.innerText = 'reply succeed';
-								} else {
-									
-								}
-							})
-							return false;//return false后，tap事件不再冒泡到li上.
-					});
-					
-					//点赞
-					mui("#comments_list").on('tap','.mui-icon-extra-like',function(e){
-							var like_comment_id = this.parentNode.getAttribute("comment_id")
-							var user_name = this.parentNode.getAttribute("to_user_name")
-							var comment_text = this.parentNode.getAttribute("comment_text")
-							var like_users = this.parentNode.getAttribute("_like_users")
-							var like_amounts = this.parentNode.getAttribute("_like_amounts")
-							var comment_add_time = this.parentNode.getAttribute("comment_add_time")
-							var amounts_like =parseInt(like_amounts)+1 
-							
-							if(like_users.indexOf(localStorage.getItem("job_no"))>=0){
-								mui.toast("Allow only one agreement")
-							}else{
-								var obj=this;//保存当前this对象 
-								mui.ajax({
-									type:"PUT",
-									url:basepath+"api/v1.0/comment/like_amount",
-									data:{
-										"access_token":localStorage.getItem("token"), 
-										"user_id":localStorage.getItem("job_no"), 
-										"comment_id":like_comment_id,
-										"type":"1",
-									},
-									async:true,
-									dataType:"json",
-									success:function(data){
-									 	if (data.meta.code == "200"){
-												plus.nativeUI.toast("agree succeed~")
-												obj.parentNode.innerHTML="<span id='com_name'>"+user_name+"</span>"+
-													'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'
-													+"&nbsp;"+"<span id='dianzan' style='right:-30px'>"+amounts_like+"</span>"
-													+"<br>"+"<span id='com_text'>"+comment_text+"</span>"
-													+"</br>"+"</span>"+"<span id='com_time'>"+comment_add_time+"</span>"+
-													"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment'></span>"
-											}else{
-												if(data.response.exception.indexOf("Allow only one agreement")){
-													mui.toast("Allow only one agreement")
-												}else{
-													mui.toast("server error")
-												}
-											}   
-									}
-								 });
-//								 this.parentNode.innerHTML=like_amounts
-							}
-							
-							return false;//return false后，tap事件不再冒泡到li上.
-					});
+//					mui("#comments_list").on('tap','.mui-icon-extra-comment',function(e){
+//							var to_user_id_f = this.parentNode.getAttribute("to_user_id")
+//							var to_user_name_f = this.parentNode.getAttribute("to_user_name")
+//							var father_comment_id_f = this.parentNode.getAttribute("father_comment_id")
+//							e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
+//							var btnArray = ['cancel', 'submit'];
+//							mui.prompt(' ', 'enter your reply...', 'ZhihuiSMB', btnArray, function(e) {
+//								if (e.index == 1) {
+//									mui.ajax({
+//									type:"post",
+//									url:basepath+"api/v1.0/comment",
+//									data:{
+//										"access_token":localStorage.getItem("token"), 
+//										"comment_type":"inforshare",
+//										"text_id":_inforshare_id,
+//										"user_id":localStorage.getItem("job_no"),
+//										"text":e.value,
+//										"to_user_id":to_user_id_f,
+//										"to_user_name":to_user_name_f,//加上this.parentNode即可获得父辈的信息
+//										"father_comment_id":father_comment_id_f,
+//										"comment_status":"kid",
+//									},
+//									async:true,
+//									dataType:"json",
+//									success:function(data){
+////										console.info(JSON.stringify(data.response))
+//									 	if (data.response.success == "1"){
+//												plus.nativeUI.toast("comment succeed~")
+//												plus.webview.getWebviewById("infor_detail").reload()
+//											}else{
+//												plus.nativeUI.toast("comment failed！")
+//											}   
+//									}
+//								 });
+//									info.innerText = 'reply succeed';
+//								} else {
+//									
+//								}
+//							})
+//							return false;//return false后，tap事件不再冒泡到li上.
+//					});
+//					
+//					//点赞
+//					mui("#comments_list").on('tap','.mui-icon-extra-like',function(e){
+//							var like_comment_id = this.parentNode.getAttribute("comment_id")
+//							var user_name = this.parentNode.getAttribute("to_user_name")
+//							var comment_text = this.parentNode.getAttribute("comment_text")
+//							var like_users = this.parentNode.getAttribute("_like_users")
+//							var like_amounts = this.parentNode.getAttribute("_like_amounts")
+//							var comment_add_time = this.parentNode.getAttribute("comment_add_time")
+//							var amounts_like =parseInt(like_amounts)+1 
+//							
+//							if(like_users.indexOf(localStorage.getItem("job_no"))>=0){
+//								mui.toast("Allow only one agreement")
+//							}else{
+//								var obj=this;//保存当前this对象 
+//								mui.ajax({
+//									type:"PUT",
+//									url:basepath+"api/v1.0/comment/like_amount",
+//									data:{
+//										"access_token":localStorage.getItem("token"), 
+//										"user_id":localStorage.getItem("job_no"), 
+//										"comment_id":like_comment_id,
+//										"type":"1",
+//									},
+//									async:true,
+//									dataType:"json",
+//									success:function(data){
+//									 	if (data.meta.code == "200"){
+//												plus.nativeUI.toast("agree succeed~")
+//												obj.parentNode.innerHTML="<span id='com_name'>"+user_name+"</span>"+
+//													'<div class="mui-icon-extra mui-icon-extra-like" id="icon_like_right" ></div>'
+//													+"&nbsp;"+"<span id='dianzan' style='right:-30px'>"+amounts_like+"</span>"
+//													+"<br>"+"<span id='com_text'>"+comment_text+"</span>"
+//													+"</br>"+"</span>"+"<span id='com_time'>"+comment_add_time+"</span>"+
+//													"<span id='icon_comment' class='mui-icon-extra mui-icon-extra-comment'></span>"
+//											}else{
+//												if(data.response.exception.indexOf("Allow only one agreement")){
+//													mui.toast("Allow only one agreement")
+//												}else{
+//													mui.toast("server error")
+//												}
+//											}   
+//									}
+//								 });
+////								 this.parentNode.innerHTML=like_amounts
+//							}
+//							
+//							return false;//return false后，tap事件不再冒泡到li上.
+//					});
 					
 				})
 

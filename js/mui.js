@@ -3158,8 +3158,8 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 				up: {
 					height: 50,
 					auto: false,
-					contentinit: 'pullup to show more',
-					contentdown: 'pullup to show more',
+					contentinit: 'pull up to show more',
+					contentdown: 'pull up to show more',
 					contentrefresh: 'loading...',
 					contentnomore: 'no more data',
 					duration: 300

@@ -1,105 +1,129 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en" class="picture">
 	<head>
 		<meta charset="utf-8">
-		<title>selfsetting</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-		<!--标准mui.css-->
-		<link rel="stylesheet" href="../css/mui.min.css">
-		<!--App自定义的css-->
-		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>news</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/picture.css" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <!--<link href="../css/mui.dtpicker.css" rel="stylesheet" />-->
+        <link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
 		<style>
-			html,body {
-				background-color: #efeff4;
+			ul {
+				font-size: 14px;
+				color: #8f8f94;
 			}
-			.title{
-				margin: 20px 15px 10px;
-				color: #6d6d72;
-				font-size: 15px;
+			li{
+				list-style-type:none;/*去掉li前面的小黑点*/
 			}
-			html,
-			body {
-				background-color: #efeff4;
+			.mui-btn {
+				padding: 10px;
 			}
-			.mui-page-content {
-				position: absolute;
-				left: 0;
-				right: 0;
-				top: 50px;
-				bottom: 0;
-				width: 100%;
-				height: 100%;
-				background-color: #efeff4;
+			.aname {
+				font-size: 16px;
+			}
+			.ainf {
+				font-size: 12px;
+			}
+			.iplay {
+				display: block;
+				background: no-repeat right center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABYCAYAAAADWlKCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAKwwAACsMBNCkkqwAAABZ0RVh0Q3JlYXRpb24gVGltZQAwOS8xMi8xM5w+I3MAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAD9UlEQVR4nO2b3XETMRRGDwzvoYOkg5hRAVkqiKmAdIA7wHSQVECoALsC1gXciV0BTge4gvCwgnHk9d/+WF8m97ztxrlXs8fS1Urym6enJxwd3uZugPMcFyKGCxHDhYjhQsRwIWK4EDFciBguRAwXIoYLEcOFiOFCxHAhYrgQMVyIGC5EDBcihgsRw4WI4ULEcCFiuBAx3uVuwDGY2XtgCBTAALjc8tEFMAdKYBJC+HOK9nXBm5dwUM7MCmAEXDcMMQVuQwhlV23qC2khZjYAboGrjkLOgFEIYd5RvM6RrSFmdgs80J0MYqyHGFsSuR4S60TJ9vrwCEziZ+YhhGXy/xdU9aWgqjfnW+IsgEKtvkgJiUPUPfUyZsD42DoQ68+Y+p62AG6UhjAZITt6xopq3L9vGf+Gqh6dJX+S6ilKNaRkU8YCGLSVARBjDGLMdS5jbgkkhMQiWyejSGtEG2KsghopKoU++5AV68ZDcrvXYWTH8Pghdz1R6CHpN3MFDPsc02PsYcy1qy0nJ6uQOANKZz+jfcOUmd3H6W1jYo5RcvsqtikbuXtI+kBmBxbwz8DczMZtksdcsz1tOinZhMRxPF2bGh8R4gz4amZLMxu2aEqa8zq2LQs5e0j6EB8bLv6dAz/NrGwyjMWcj3vadjJyCimS60nLeFfAbzO7bfANT3MXLdvSmJxCBsl12VHcL8AyvpkfSpo7bdvJyCkkfQfocv5/Bnw3s/mBs6Y097aFzd7JPcv6T5dv5GtcAr/2TZN7yt0IGSE908k0+RS8FiEvhhd1yKEFUw5YAVBApoe0XQrZwgL4GEIY7pLRU+5G5OwhC57PZgbAsqPYK6rdxUMXC9Npbro8fzJy9pB0qll0FPcOuDhCRl3ubEvwOYWUyXXb5YoZ1X7GqMHSfZq7bNmWxuQUki5XnDdc+n4EPoUQiiabSzFnejKl7TJOY7IJid/iaXJ7fESIFfCNas+9zQNMc05zHnjIPctKx/mrA9egflCJGLd5eDFXukGWdddQYU+95PlDWVE97GXPeS+oivf6saBZCKHoM+8+cvcQ2NyhOwMmfW4SxdgTNs9oZd0tBAEhsRDfJbcvgbIPKTtOnNzlPnECAkPWP8xsTv3ZrJ1v2UfmuKDqGRt5QgjZ9kDWyd5D1iioP1U4P3KzqZYYY5v0om38rpDpIeCHrUFMCPjPEeSE/COetf3SU/i7EEL2GVUdSjXkGfGBfWDzIFsb/q93dRizU2R7yDr+o09R/GfRzsmRrSGvFRcihgsRw4WI4ULEcCFiuBAxXIgYLkQMFyKGCxHDhYjhQsRwIWK4EDFciBguRAwXIoYLEcOFiOFCxHAhYrgQMf4CVuqCm+17t3sAAAAASUVORK5CYII=);
+				background-size: 50px 44px;
+				-ms-touch-action: auto;
 			}
 		</style>
+
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">feedback</h1>
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">feedback</h1>
 		</header>
-		<div class="mui-page-content">
-		     <p>questions&suggestions</p>
-		     <div class="row mui-input-row">
-		     	<textarea id="question" class="mui-input-clear question" placeholder="please describe your questions and suggestions..."></textarea>
-		     </div>
-		     <p>contacts</p>
-		     <div class="mui-input-row">
-		     	<input id="contact" type="text" class="mui-input-clear contact" placeholder="optional" />
-		     </div>
-		     <button id="submit" type="button" class="mui-table-view-cell mui-btn mui-btn-block mui-btn-primary"  style="margin-top: 25px;">submit</button>
-		     
+		<div class="mui-content">
+			<br />
+			<label>&nbsp;&nbsp;&nbsp;description</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			
+			<div class="mui-input-row" style="margin: 10px 5px;">
+				<textarea id="textarea" rows="5" placeholder="enter description"></textarea>
+			</div>	
+			
+			<label>&nbsp;&nbsp;&nbsp;images（optional）</label>
+			<br />
+			<div id="image-list" class="row image-list" style="height: 80px">
+			</div>
+			<div class="mui-button-row">
+				<button id="newguide_submit" class="mui-btn mui-btn-primary" type="button" onclick="return true;">submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="newguide_cancel" class="mui-btn mui-btn-danger" type="button" onclick="return false;">cancel</button>
+			</div>
+			<br />
+			<br />
 		</div>
+		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script src="../js/add_picture.js"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/app.js"></script>
-		<script type="text/javascript" src="../js/basepath.js" ></script>
+		<script src="../js/mui.picker.js"></script>
+		<script type="text/javascript" src="../js/mui.picker.min.js" ></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<!--<script type="text/javascript" src="../js/get_video.js" ></script>-->
 		<script>
-			(function($,doc){
-				$.init();
-				$.ready(function(){
-					var content = doc.getElementById("question");
-					var contact = doc.getElementById("contact");
-					var submit_button=doc.getElementById("submit");
+		(function($, doc) {
+				$.init({ //需要先定义longtap
+					gestureConfig:{
+					   tap: true, //默认为true
+					   longtap: true, //默认为false
+					  }}) 
+				$.ready(function() {
+
+			     //提交反馈
+					var textareaBox = doc.getElementById('textarea');
+					var newguide_submitButton = doc.getElementById("newguide_submit");
+					var newguide_cancelButton = doc.getElementById('newguide_cancel');
 					
-					submit_button.addEventListener('tap',function(event){
-						if(content.value==""){
-							plus.nativeUI.toast("请填写您的问题和意见")
+					newguide_submitButton.addEventListener('tap', function(event) {
+						
+						if(textareaBox.value==""){
+							plus.nativeUI.toast("please enter title")
 						}else{
-							$.ajax({
-								type:"post",
-//								url:basepath+"baosteelpipe/Feedback",
-//								data:{
-//									"feedback":content.value,
-//									"contact":contact.value,
-//								},
-								url:basepath+"api/v1.0/feedback",
-								data:{
-									"access_token":localStorage.getItem("token"),
-									"feedback_content":content.value,
-									"contact":contact.value,
-								},
-								async:true,
-								datatype:"json",
-								success:function(data){
-									if (data.response.success == "1"){
-										plus.nativeUI.toast("感谢您的意见反馈！祝您工作顺利！")
-										mui.back();
-									}else{
-										plus.nativeUI.toast("反馈失败，请重试！")
-									}
-								},
-								error:function(){
-									plus.nativeUI.toast("请求服务器失败！")
-								}
+							var wt  = plus.nativeUI.showWaiting("loading...");
+							getimgbase64();
 							
-							});
+							$.ajax({
+							type: "post",
+							url: basepath+"api/v1.0/feedback",
+							data:{
+								"access_token":localStorage.getItem("token"),
+								"feedback_content":textareaBox.value,
+								"images_list":JSON.stringify(images_array),
+							},
+							async: false,
+							dataType:"json",//如果返回的是str，那么这个地方必须用text，用json报错
+							success: function(data) {
+								if (data.response.success=="1")
+								{	
+									wt.close();
+									plus.nativeUI.toast("feedback succeed");
+									mui.back();
+									
+								}else{
+									plus.nativeUI.toast("feedback failed");
+								}
+							},
+							error: function() {
+								plus.nativeUI.toast("server error!");
+							}
+						});
 						}
-					});
-				})
-			})(mui,document)
+						});
+
+			   newguide_cancelButton.addEventListener('tap',function(event){
+			   	mui.back();
+			   })
+			
+				});
+			})(mui, document);
 		</script>
 	</body>
 </html>

@@ -74,9 +74,9 @@
 						li.setAttribute("ptos_category",value.category)
 						li.setAttribute("ptos_result",value.result)
 						li.innerHTML = "editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
-									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+									"category："+value.category+"<br>"+"title："+value.title ;
 						var read_text="editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
-									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+									"category："+value.category+"<br>"+"title："+value.title ;
 						var icon = document.createElement("icon")
                         list.appendChild(li)
                         li.setAttribute("li_text",read_text) 
@@ -100,8 +100,8 @@
 						var li_text = this.getAttribute("li_text")
 						
 						mui.openWindow({
-					    url:"ptos_detail.html",
-					    id:"ptos_detail",
+					    url:"ptos_detail_all.html",
+					    id:"ptos_detail_all",
 					    
 					    extras:{
 					    	ptos_id:ptos_id,

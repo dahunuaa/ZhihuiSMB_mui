@@ -25,7 +25,7 @@
 		
 		<div class="mui-content" style="font-size: 16px;" >
 			<div align="center" style="background-color:#FAFAFA">
-				<a href="#user_search_pop"><input type="search" id="user_search" class="mui-icon mui-icon-search" placeholder="请输入搜索内容" style="width:250px;height:35px; background-color:#E8E8E8; margin-top: 10px;margin-bottom: 5px;"/></a>
+				<a href="#user_search_pop"><input type="search" id="user_search" class="mui-icon mui-icon-search" placeholder="search users" style="width:250px;height:35px; background-color:#E8E8E8; margin-top: 10px;margin-bottom: 5px;"/></a>
 				<a id="icon-search"><span class="mui-icon mui-icon-search"></span></a>
 				<hr />
 			</div>
@@ -41,16 +41,16 @@
 			<br />
 			<form class="mui-input-group">
 				<div class="mui-input-row">
-					<label>工号</label>
-					<input id="job_no" type="text" class="mui-input-clear" placeholder="输入工号" />
+					<label>job_no</label>
+					<input id="job_no" type="text" class="mui-input-clear" placeholder="enter job_no" />
 				</div>
 				<div class="mui-input-row">
-					<label>姓名</label>
-					<input id="name" type="text" class="mui-input-clear" placeholder="输入姓名" />
+					<label>name</label>
+					<input id="name" type="text" class="mui-input-clear" placeholder="enter name" />
 				</div>
 			</form>
 			<div class="mui-button-row">
-				<button id="submit" class="mui-btn mui-btn-primary" type="button">查询</button>
+				<button id="submit" class="mui-btn mui-btn-primary" type="button">search</button>
 			</div>
 			<br />
 		</div>
@@ -102,7 +102,7 @@
 								li.setAttribute("name",value.name);
 								li.setAttribute("scope",value.scope);
 								
-								li.innerHTML = "工号："+value.job_no +"&nbsp;&nbsp;&nbsp;&nbsp;"+"姓名："+value.name+"<br>"+"权限："+value.scope ;
+								li.innerHTML = "job_no："+value.job_no +"&nbsp;&nbsp;&nbsp;&nbsp;"+"name："+value.name+"<br>"+"permission："+value.scope ;
 	                            
 	                            list.appendChild(li)
 							})
@@ -113,10 +113,10 @@
 								var name = this.getAttribute("name")
 								var scope = this.getAttribute("scope")
 								
-								mui.confirm("是否删除该用户？","",["取消","删除"],function(e){
+								mui.confirm("delete this user？","",["cancel","delete"],function(e){
 									if(e.index==1){
 										if(scope == "admin"){
-											plus.nativeUI.toast("您无权限删除该用户！");
+											plus.nativeUI.toast("no permission！");
 										}else{
 											mui.ajax({
 											type:"delete",
@@ -129,14 +129,14 @@
 											success:function(data){
 												if(data.response.success =="1")
 												{
-													plus.nativeUI.toast("已删除该用户")
+													plus.nativeUI.toast("user deleted")
 													plus.webview.currentWebview().reload()
 												}else{
-													plus.nativeUI.toast("删除失败，请重试！")
+													plus.nativeUI.toast("delete failed！")
 												}
 											},
 											error:function(){
-												plus.nativeUI.toast("请求服务器失败!");
+												plus.nativeUI.toast("server error!");
 											}
 										})
 										}

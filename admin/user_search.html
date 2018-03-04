@@ -66,7 +66,7 @@
 						li.setAttribute("name",value.name);
 						li.setAttribute("scope",value.scope);
 						
-						li.innerHTML = "工号："+value.job_no +"&nbsp;&nbsp;&nbsp;&nbsp;"+"姓名："+value.name+"<br>"+"权限："+value.scope ;
+						li.innerHTML = "job_no："+value.job_no +"&nbsp;&nbsp;&nbsp;&nbsp;"+"name："+value.name+"<br>"+"permission："+value.scope ;
                         
                         list.appendChild(li)
 					})
@@ -77,36 +77,36 @@
 						var name = this.getAttribute("name")
 						var scope = this.getAttribute("scope")
 						
-						mui.confirm("是否删除该用户？","",["取消","删除"],function(e){
-							if(e.index==1){
-								if(scope == "admin"){
-									plus.nativeUI.toast("您无权限删除该用户！");
-								}else{
-									mui.ajax({
-									type:"delete",
-									url:basepath+"api/v1.0/user/"+id+"?access_token="+localStorage.getItem("token"),
-									data:{
-										
-									},
-									async:true,
-									dataType:"json",
-									success:function(data){
-										if(data.response.success =="1")
-										{
-											plus.nativeUI.toast("已删除该用户")
-											plus.webview.currentWebview().reload()
+						mui.confirm("delete this user？","",["cancel","delete"],function(e){
+									if(e.index==1){
+										if(scope == "admin"){
+											plus.nativeUI.toast("no permission！");
 										}else{
-											plus.nativeUI.toast("删除失败，请重试！")
+											mui.ajax({
+											type:"delete",
+											url:basepath+"api/v1.0/user/"+id+"?access_token="+localStorage.getItem("token"),
+											data:{
+												
+											},
+											async:true,
+											dataType:"json",
+											success:function(data){
+												if(data.response.success =="1")
+												{
+													plus.nativeUI.toast("user deleted")
+													plus.webview.currentWebview().reload()
+												}else{
+													plus.nativeUI.toast("delete failed！")
+												}
+											},
+											error:function(){
+												plus.nativeUI.toast("server error!");
+											}
+										})
 										}
-									},
-									error:function(){
-										plus.nativeUI.toast("请求服务器失败!");
+										
 									}
 								})
-								}
-								
-							}
-						})
 						
 						
                   });										                                         			         			           

@@ -41,11 +41,11 @@
 					<label>content</label>
 					<input id="textarea" type="text" class="mui-input-clear" placeholder="enter key word of content">
 				</div>
-				<li class="mui-table-view-cell">
+				<!--<li class="mui-table-view-cell">
 				<a id="to_sb" class="mui-navigate-right">
 					troubleshooter<span id="to_name"style="padding: 0px 0px 0px 65px;"></span>
 				</a>
-			    </li>
+			    </li>-->
 				<button id="search_btn" type="button" class="mui-table-view-cell mui-btn mui-btn-block mui-btn-primary"  style="margin-top: 25px;">search</button>
 			</form>
 						
@@ -86,40 +86,40 @@
 					
 					var showUserPickerButton = doc.getElementById('to_sb');
 					var category = doc.getElementById('category');
-					showUserPickerButton.addEventListener('tap', function(event) {
-						
-						$.ajax({
-								type: "get",
-								url: basepath+"api/v1.0/user/getcontact?access_token="+localStorage.getItem("token")+"&position=all",
-								async: false,
-								dataType:"json",
-								success: function(data) {
-									if (data.response.success=="1")
-									{	
-										contacts=data.response.data
-									}else{
-										plus.nativeUI.toast("get contacts failed！");
-									}
-								},
-								error: function() {
-									plus.nativeUI.toast("server error!");
-								}
-							});
-						var selecttoman = new $.PopPicker();
-						selecttoman.setData(contacts);
-						
-						selecttoman.show(function(items) {
-							to_name.innerText = items[0].text;
-						});
-					}, false);
+//					showUserPickerButton.addEventListener('tap', function(event) {
+//						
+//						$.ajax({
+//								type: "get",
+//								url: basepath+"api/v1.0/user/getcontact?access_token="+localStorage.getItem("token")+"&position=all",
+//								async: false,
+//								dataType:"json",
+//								success: function(data) {
+//									if (data.response.success=="1")
+//									{	
+//										contacts=data.response.data
+//									}else{
+//										plus.nativeUI.toast("get contacts failed！");
+//									}
+//								},
+//								error: function() {
+//									plus.nativeUI.toast("server error!");
+//								}
+//							});
+//						var selecttoman = new $.PopPicker();
+//						selecttoman.setData(contacts);
+//						
+//						selecttoman.show(function(items) {
+//							to_name.innerText = items[0].text;
+//						});
+//					}, false);
 					
 					var titleBox = doc.getElementById("title")
 					var categoryBox = doc.getElementById("category")
 					var contentBox = doc.getElementById("textarea")
-					var tonameBox = doc.getElementById("to_name")
+//					var tonameBox = doc.getElementById("to_name")
 					searchButton = doc.getElementById("search_btn")
 					searchButton.addEventListener('tap',function(event){
-						if (titleBox.value ==""&categoryBox.innerText==""&contentBox.value==""&tonameBox.innerHTML==""){
+						if (titleBox.value ==""&categoryBox.innerText==""&contentBox.value==""){
 							plus.nativeUI.toast("enter search conditions")
 						}else{
 							mui.openWindow({
@@ -130,7 +130,7 @@
 									title:titleBox.value,
 									category:categoryBox.innerText,
 									content:contentBox.value,
-									to_name:tonameBox.innerHTML
+									to_name:"all"
 									
 								}
 							})

@@ -98,7 +98,7 @@
 						<a href="#myfeedbackPopover">
 						<span class="mui-icon mui-icon-person" style="margin-top: -10px;color: red;font-size: 35px;">
 						</a>
-						<span class="mui-media-body" style="margin-top: -7px;">my questions</span></span>
+						<span class="mui-media-body" style="margin-top: -7px;">my FAQs</span></span>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"id="add_ptos">
 						<a>
@@ -124,25 +124,18 @@
 		<div id="myfeedbackPopover" class="mui-popover">
 			<div class="mui-scroll-wrapper" style="text-align: center;">
 			<div class="mui-button-row">
-				<button id="myfeedback" class="mui-btn mui-btn-primary" type="button">my questions</button>
+				<button id="myfeedback" class="mui-btn mui-btn-primary" type="button">my FAQs</button>
 			</div>
 			<br />
-			<!--<div class="mui-button-row">
-				<button id="myanswer" class="mui-btn mui-btn-primary" type="button">my answer</button>
-			</div>
-			<br />-->
 			<div class="mui-button-row">
-				<button id="feedbacklike" class="mui-btn mui-btn-primary" type="button">questions like</button>
+				<button id="feedbacklike" class="mui-btn mui-btn-primary" type="button">FAQs like</button>
 			</div>
+			<br />
+			<div class="mui-button-row">
+				<button id="faqs_unfinished" class="mui-btn mui-btn-primary" type="button">FAQs unfinished</button>
 			</div>
-			<!--<div class="mui-scroll-wrapper">
-					<ul class="mui-table-view">
-						<li class="mui-table-view-cell"><a href="#" id="myfeedback">我的反馈</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#" id="myanswer">我的解答</a>
-						</li>
-					</ul>
-			</div>-->
+			<br />
+			</div>
 		</div>
 		
 	<script src="../js/mui.min.js"></script>
@@ -184,12 +177,12 @@
 				})
 			})
 			
-//			document.getElementById("myanswer").addEventListener('tap',function(){
-//				mui.openWindow({
-//					url:'myanswerptos.html',
-//					id:'myanswerptos',
-//				})
-//			})
+			document.getElementById("faqs_unfinished").addEventListener('tap',function(){
+				mui.openWindow({
+					url:'ptos_unfinished.html',
+					id:'ptos_unfinished',
+				})
+			})
 			document.getElementById("feedbacklike").addEventListener('tap',function(){
 				mui.openWindow({
 					url:'like_base.html',
@@ -235,17 +228,17 @@
 						li.setAttribute("ptos_result",value.result)
 						if(unread_msg.indexOf(value._id)>=0){
 							li.innerHTML ='<span class="unread"></span>'+"editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
-									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+									"category："+value.category+"<br>"+"title："+value.title ;
 						}else{
 							li.innerHTML = "editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
-									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+									"category："+value.category+"<br>"+"title："+value.title ;
 						}
 						var read_text="editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
-									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+									"category："+value.category+"<br>"+"title："+value.title ;
                         
 						var icon = document.createElement("icon")
 						
-						if(value.result==""){
+						if(value.result=="unfinished"){
 							icon.className="mui-icon iconfont icon-daiwancheng"	
 						}else{
 							icon.className="mui-icon mui-icon-checkmarkempty"						
@@ -272,8 +265,8 @@
 						var li_text = this.getAttribute("li_text")
 						
 						mui.openWindow({
-					    url:"ptos_detail.html",
-					    id:"ptos_detail",
+					    url:"ptos_detail_all.html",
+					    id:"ptos_detail_all",
 					    
 					    extras:{
 					    	ptos_id:ptos_id,
@@ -316,8 +309,9 @@
 	                 //长按删除（管理员）
 	                 mui("#list").on("longtap","li",function(){
 	                 	ptos_id = this.getAttribute("ptos_id")
-	                 	if("admin"==localStorage.getItem("scope")){
-	                 		mui.confirm("是否删除该记录？","",["取消","删除"],function(e){
+	                 	editor_jobno = this.getAttribute("editor_jobno")
+	                 	if("admin"==localStorage.getItem("scope")||editor_jobno==localStorage.getItem("job_no")){
+	                 		mui.confirm("delete this FAQ？","",["cancel","delete"],function(e){
 							if(e.index==1){
 								mui.ajax({
 								type:"delete",
@@ -330,17 +324,16 @@
 								success:function(data){
 									if(data.response.success =="1")
 									{
-										plus.nativeUI.toast("已删除该记录")
+										plus.nativeUI.toast("delete succeed")
 										plus.webview.currentWebview().reload()
 									}else{
-										plus.nativeUI.toast("删除失败，请重试！")
+										plus.nativeUI.toast("failed")
 									}
 								},
 								error:function(){
-									plus.nativeUI.toast("请求服务器失败!");
+									plus.nativeUI.toast("server error!");
 								}
 							})
-								
 							}
 						})
 	                 	}
@@ -375,8 +368,8 @@
 			
 			document.getElementById("add_ptos").addEventListener('tap',function(){
 				mui.openWindow({
-					url:"ptos_add.html",
-					id:"ptos_add",
+					url:"ptos_add_all.html",
+					id:"ptos_add_all",
 					
 				})
 				

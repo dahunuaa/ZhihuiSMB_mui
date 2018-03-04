@@ -133,13 +133,13 @@
 								
 								if(unread_msg.indexOf(value._id)>=0){
 									li.innerHTML ='<span class="unread"></span>'+"editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
-											"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+											"category："+value.category+"<br>"+"title："+value.title ;
 								}else{
 									li.innerHTML = "editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
-											"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+											"category："+value.category+"<br>"+"title："+value.title ;
 								}
 								var read_text='<span class="unread"></span>'+"editor："+value.add_user_name+"<br>"+"edit_time："+value.add_time+"<br>"+
-									"category："+value.category+"<br>"+"title："+value.title +"<br>" +"troubleshooter："+value.to_name;
+									"category："+value.category+"<br>"+"title："+value.title +"<br>" ;
 								
 		                        
 								var icon = document.createElement("icon")
@@ -170,8 +170,8 @@
 								var li_text = this.getAttribute("li_text")
 								
 								mui.openWindow({
-							    url:"ptos_detail.html",
-							    id:"ptos_detail",
+							    url:"ptos_detail_all.html",
+							    id:"ptos_detail_all",
 							    
 							    extras:{
 							    	ptos_id:ptos_id,
