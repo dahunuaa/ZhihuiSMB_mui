@@ -57,11 +57,11 @@
 				<label>Psw:</label>
 				<input id="password" type="password" class="mui-input-clear mui-input" placeholder="please enter password" />
 			</div>
-		</form>
+		<!--</form>
 			<div class="mui-input-row mui-checkbox mui-left" id="rember_account">
 				<label id="remb_lable">remember no. and psw：No</label>
 				<input name="checkbox" id="rember_acc_psw" value="remember psw" type="checkbox">
-			</div>
+			</div>-->
 		</form>
 		
 		<div class="mui-content-padded">
@@ -83,11 +83,11 @@
 	<script>
 		(function ($, doc) {
 			$.init();
-			mui('#rember_account').on('change', 'input', function() {
-			var value = this.checked?"Yes":"No";
-			this.previousElementSibling.innerText = "remember no. and psw："+value;
-			localStorage.setItem("value",value)
-			});
+//			mui('#rember_account').on('change', 'input', function() {
+//			var value = this.checked?"Yes":"No";
+//			this.previousElementSibling.innerText = "remember no. and psw："+value;
+//			localStorage.setItem("value",value)
+//			});
 			
 			
 			$.plusReady(function() {
@@ -96,23 +96,23 @@
 					var accountBox = doc.getElementById('account');
 					var passwordBox = doc.getElementById('password');
 					
-					if(localStorage.getItem("value") == "Yes"){
-						document.getElementById("rember_acc_psw").checked="true"
-						document.getElementById("remb_lable").innerHTML="remember no. and psw：Yes"
-						accountBox.value = localStorage.getItem("user_account")
-						passwordBox.value = localStorage.getItem("user_psw")	
-					}else{
-						accountBox.value = ""
-						passwordBox.value = ""	
-					}
+//					if(localStorage.getItem("value") == "Yes"){
+//						document.getElementById("rember_acc_psw").checked="true"
+//						document.getElementById("remb_lable").innerHTML="remember no. and psw：Yes"
+//						accountBox.value = localStorage.getItem("user_account")
+//						passwordBox.value = localStorage.getItem("user_psw")	
+//					}else{
+//						accountBox.value = ""
+//						passwordBox.value = ""	
+//					}
 					
 					loginButton.addEventListener('tap', function(event) {
 
 						if (accountBox.value==""||passwordBox.value=="") {
 							plus.nativeUI.toast("job number or password error")
 						} else{
-						localStorage.setItem("user_account",accountBox.value);//accountBox.value只有在表单提交的时候会显示其值
-						localStorage.setItem("user_psw",passwordBox.value);
+//						localStorage.setItem("user_account",accountBox.value);//accountBox.value只有在表单提交的时候会显示其值
+//						localStorage.setItem("user_psw",passwordBox.value);
 						
 						$.ajax({
 						type: "post",

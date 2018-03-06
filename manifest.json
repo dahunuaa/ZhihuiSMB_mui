@@ -10,7 +10,7 @@
     "icons": {
         "72": "icon.png"
     },
-    "launch_path": "login.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
+    "launch_path": "main.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
     "developer": {
         "name": "",/*开发者名称*/
         "email": "",/*开发者邮箱地址*/
@@ -206,18 +206,21 @@
 				"resources": [],
 				"refer": [
 					"register.html",
-					"main.html"
+					"main.html",
+					"login.html"
 				],
 				"priority": 0
 			},
 			"main.html": {
 				"resources": [
-					"ptos/ptos_main.html"
+					"ptos/ptos_main.html",
+					"css/mui.min.css"
 				],
 				"refer": [
 					"inforshare/inforshare_main.html",
 					"selfInformation.html",
-					"selfinformation/selfInformation.html"
+					"selfinformation/selfInformation.html",
+					"login.html"
 				],
 				"priority": 0
 			},
@@ -231,7 +234,11 @@
 				"priority": 0
 			},
 			"ptos/ptos_main.html": {
-				"resources": [],
+				"resources": [
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"css/icons-extra.css"
+				],
 				"refer": [
 					"ptos/ptos_search.html",
 					"ptos/ptos_add.html",
@@ -291,7 +298,11 @@
 				"priority": 0
 			},
 			"inforshare/inforshare_main.html": {
-				"resources": [],
+				"resources": [
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"css/icons-extra.css"
+				],
 				"refer": [
 					"inforshare/add_inforshare.html",
 					"inforshare/infor_detail.html",
@@ -338,13 +349,18 @@
 				"priority": 0
 			},
 			"selfinformation/selfInformation.html": {
-				"resources": [],
+				"resources": [
+					"img/schaeffler02.png",
+					"css/app.css",
+					"css/mui.min.css"
+				],
 				"refer": [
 					"selfsetting/selfsetting.html",
 					"selfinformation/feedback.html",
 					"analysis/analysis.html",
 					"admin/manage_user.html",
-					"selfinformation/camera.html"
+					"selfinformation/camera.html",
+					"login.html"
 				],
 				"priority": 0
 			},
@@ -404,13 +420,11 @@
 				"notice/notice_edit.html",
 				"js/mui.picker.min.js",
 				"js/copy.js",
-				"img/schaeffler02.png",
 				"fonts/mui-icons-extra.ttf",
 				"js/mui.zoom.js",
 				"js/common.js",
 				"js/mui.poppicker.js",
 				"js/defined_downloadfile.js",
-				"css/iconfont.css",
 				"js/mui.previewimage.js",
 				"fonts/iconfont.ttf",
 				"js/mui.js",
@@ -440,7 +454,6 @@
 				"img/1080x1882.png",
 				"js/jquery.mobile-1.3.2.min.js",
 				"ptos/camera_video.html",
-				"css/icons-extra.css",
 				"img/750x1334.png",
 				"js/infor.js",
 				"css/image_preview.css",
@@ -460,8 +473,6 @@
 				"notice/noticelist.html",
 				"css/mui.picker.css",
 				"notice/new_notice.html",
-				"css/app.css",
-				"css/mui.min.css",
 				"js/mobile_check.js",
 				"js/mui.locker.js",
 				"js/get_video.js",

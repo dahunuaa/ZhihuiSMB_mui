@@ -81,25 +81,17 @@
 		(function ($, doc) {
 			//mui初始化
 			$.init(
-				mui.ajax({
-				type:"get",
-				url:basepath+"api/v1.0/noticeread?access_token="+localStorage.getItem("token")+"&job_no="+localStorage.getItem("job_no"),
-				async:false,
-				dataType:"json",
-				success:function(data){
-//					console.info(JSON.stringify(data))
-					if(data.response.data[0].unread_msg == null||data.response.data[0].unread_msg == ""){//读取list的时候需要跟上下标
-//						document.getElementById("notice_remind").style.display="none"
-					}
-				},
-				error: function() {
-						plus.nativeUI.toast("server error!");
-					}
-				})
+				
 			);
-			
-			
 			$.plusReady(function(){
+			
+			if(localStorage.getItem("job_no")==""||localStorage.getItem("job_no")==undefined||localStorage.getItem("job_no")==null){
+					mui.openWindow({
+						url:"login.html",
+						id:"login"
+					})
+				}else{
+				
 			var subpages = ['ptos/ptos_main.html', 'inforshare/inforshare_main.html', 'selfinformation/selfInformation.html'];
 			var subpage_style = {
 				top: '45px',
@@ -109,7 +101,7 @@
 			var aniShow = {};
 			
 			 //创建子页面，首个选项卡页面显示，其它均隐藏；
-			mui.plusReady(function() {
+//			mui.plusReady(function() {
 				var self = plus.webview.currentWebview();
 				
 				for (var i = 0; i < 3; i++) {
@@ -124,8 +116,7 @@
 					self.append(sub);
 					
 				}
-				
-			});
+//			});
 			 //当前激活选项
 			var activeTab = subpages[0];
 			var title = document.getElementById("title");
@@ -204,7 +195,7 @@
 				}
 			};
 		   
-			
+		}	
       });
 		}(mui, document));
 		</script>

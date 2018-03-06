@@ -111,7 +111,7 @@
 						src: e,
 						dst: '_doc/' + name,
 						overwrite: true,
-						quality: 50
+						quality: 100
 					}, function(zip) {
 						size += zip.size  
 //						console.log("filesize:"+zip.size+",totalsize:"+size);
