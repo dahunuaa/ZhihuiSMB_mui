@@ -41,11 +41,47 @@
 		<div id="output">
 			Camera管理摄像头设备，可用于拍摄照片、录制视频文件。
 		</div>
-	</body>
+		<button id="video_submit">submit</button>
+	
+	<script type="text/javascript" src="../js/basepath.js" ></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/app.js" ></script>
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript" src="../js/immersed.js" ></script>
 	<script type="text/javascript" src="../js/get_video.js" ></script>
-	<script type="text/javascript">
+	<script>
+		
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				document.getElementById("video_submit").addEventListener('tap',function(event){
+					var files = document.getElementById("history").files;
+			        var url = "";
+			        // FormData 对象
+			        var form = new FormData();// 可以增加表单数据
+			        form.append("file", files[0]);// 文件对象
+			        $.ajax({
+			            url: basepath+"api/v1.0/file/upload",
+			            type: "post",
+			            data: form,
+			            //关闭序列化
+			            processData: false,
+			            contentType: false,
+			            success: function (josn) {
+			            	console.info(josn)
+			                //判断返回值，若为Object类型，即操作成功
+			                if (josn.IsSuccess === "1") {
+			                    layer.msg(josn.Message, { icon: 1 }, function () {
+			
+			                    });
+			                } else {
+			                    layer.msg(josn.Message, { icon: 2 });
+			                }
+			            }
+			        });
+				})
+			});
+		})(mui, document);
 //		var i=1,gentry=null,w=null;
 //		var hl=null,le=null,de=null,ie=null;
 //		var unv=true;
@@ -194,4 +230,5 @@
 //			});
 //		}
 	</script>
+	</body>
 </html>

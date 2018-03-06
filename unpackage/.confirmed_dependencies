@@ -112,7 +112,8 @@
 			"selfsetting/selfsetting.html",
 			"selfinformation/feedback.html",
 			"analysis/analysis.html",
-			"admin/manage_user.html"
+			"admin/manage_user.html",
+			"selfinformation/camera.html"
 		]
 	},
 	"inforshare/like_base.html": {
@@ -150,6 +151,11 @@
 	"admin/users_list.html": {
 		"refer": [
 			"admin/user_search.html"
+		]
+	},
+	"selfinformation/camera.html": {
+		"refer": [
+			"selfinformation/camera_video.html"
 		]
 	}
 }

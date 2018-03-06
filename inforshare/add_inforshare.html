@@ -46,15 +46,18 @@
 				<label>&nbsp;&nbsp;&nbsp;description</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<div class="mui-input-row" style="margin: 10px 5px;">
 					<textarea id="textarea" rows="5" placeholder="enter description"></textarea>
-				</div>	
-				<br>
+				</div>
+				<br/>
+				<div>
 				<form id="uploadForm" style="margin-top: -15px;">
 					<label>&nbsp;&nbsp;&nbsp;upload file（optional）</label>
 					<br/>
-					<input type="file" name="file" id="file_up"  style="margin-top: 10px; margin-left: 12px; "/>
+					<input type="file" name="file" id="file_up"  style="margin-top: 10px;width: 100%; padding: 4px 10px;" multiple/>
+					<!--width: 100%;设置不超出手机屏幕（iphone5）-->
 					<br/>
 					<button id="cancel_file"  type="button"style="margin-top: 10px; margin-left: 12px; height: 30px; width: 85px; background-color:skyblue">cancel</button>
 				</form>
+				</div>
 				<br />
 				<div>
 					<label>&nbsp;&nbsp;&nbsp;upload images（optional）</label>

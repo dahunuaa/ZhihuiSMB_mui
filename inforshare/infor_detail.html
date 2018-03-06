@@ -58,6 +58,9 @@
 				bottom: 30px;
 				left:20px
 			}
+			.mui-button-row{
+				background-color: #efeff4;
+			}
 		   
 		   
 		</style>
@@ -86,10 +89,13 @@
 	        <br />
 	        <span style="border-left:20px;">content:</span>&nbsp;&nbsp;&nbsp;<span id="inforshare_text"></span>
         	<p id="p_area" style="display: none;"><span>file：</span><span id="file_to_download" ></span></p>
-			<span id="processspan">download progress：</span><span id="processtext"></span>
+			<span id="processspan" style="display: none;">download progress：</span><span id="processtext"></span>
 			<div class="mui-button-row" id="btn_area" style="display: none">
-				<button id="downloadfile" class="mui-btn mui-btn-primary" type="button" onclick="return true;" >tap to download</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="downloadfile" class="mui-btn mui-btn-primary" type="button" onclick="return true;">tap to download</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button id="openfile" class="mui-btn mui-btn-danger" type="button" onclick="return false;">openfile</button>
+			</div>	
+			<div class="mui-button-row" id="btn_area_open" style="display: none">
+				<button id="open_file" class="mui-btn mui-btn-danger" type="button" onclick="return false;">openfile</button>
 			</div>	
 			
 			<br />
@@ -165,9 +171,19 @@
 //						document.getElementById("downloadfile").style.display ="none"
 //						document.getElementById("openfile").style.display="none"
 					}else{
-						document.getElementById("btn_area").style.display="block"
 						document.getElementById("p_area").style.display="block"
+						
+						
 					}
+					//判断文件是否已将下载到本地
+					var file_path ="_doc/"+file_name
+					plus.io.resolveLocalFileSystemURL(file_path,function(entry){
+						document.getElementById("btn_area_open").style.display="block"
+					},function(e){
+						document.getElementById("btn_area").style.display="block"
+					})
+					
+
 				    inforshare_id.innerHTML=_inforshare_id
 					inforshare_title.innerHTML=_inforshare_title
 					inforshare_time.innerHTML=_time
@@ -290,8 +306,9 @@
 						    			plus.nativeUI.toast("downlaoding...");
 						    		break;
 						    		case 3:	// 已接收到数据
+						    		
+						    			document.getElementById("processspan").style.display="block"
 										processtext.innerHTML=task.downloadedSize+"/"+task.totalSize;
-//										
 						    			
 						    		break;
 						    		case 4:	// 下载完成			    			
@@ -300,12 +317,17 @@
 						    		break;
 						    	}
 						    } );
-			
+							
 						    dtask.start();
 							}
-					    
 						})
 					document.getElementById("openfile").addEventListener('tap',function(e){
+						plus.runtime.openFile("_doc/"+fileName, {},function(e){
+							plus.nativeUI.toast("open failed")
+				    })
+					})
+					
+					document.getElementById("open_file").addEventListener('tap',function(e){
 						plus.runtime.openFile("_doc/"+fileName, {},function(e){
 							plus.nativeUI.toast("open failed")
 				    })

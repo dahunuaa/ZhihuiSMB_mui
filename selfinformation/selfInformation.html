@@ -52,11 +52,6 @@
 						</div>
 					</a>
 				</li>
-				<!--<li class="mui-table-view-cell">
-					<a class="mui-navigate-right" id="notice">
-						通知公告
-					</a>
-				</li>-->
 				<li class="mui-table-view-cell">
 					<a class="mui-navigate-right" id="selfsetting">
 						self-setting
@@ -70,6 +65,16 @@
 				<li class="mui-table-view-cell">
 					<a class="mui-navigate-right" id="feedback">
 						feedback
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" id="camera">
+						camera
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" id="camera_display">
+						camera_display
 					</a>
 				</li>
 				<div class="mui-table-view-cell" style="display: none;" id="user_manage">
@@ -152,6 +157,19 @@
 				id:"manage_user"
 				})
 		})
+		document.getElementById("camera").addEventListener('tap',function(){
+			mui.openWindow({
+				url:"camera.html",
+				id:"camera"
+				})
+		})
+		document.getElementById("camera_display").addEventListener('tap',function(){
+			mui.openWindow({
+				url:"camera_video.html",
+				id:"camera"
+				})
+		})
+		
 
 		
 	 })
