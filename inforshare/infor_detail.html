@@ -149,7 +149,7 @@
 					
 					var inforshare_time = document.getElementById("inforshare_time");
 					var file_to_download = document.getElementById("file_to_download");
-					var file_size = document.getElementById("filesize")
+//					var file_size = document.getElementById("filesize")
 					var images_list = document.getElementById("images_list")
 					
 					//获取前一个页面传过来的值
@@ -164,7 +164,8 @@
 					var _images_list = self.images_list
 					var file_name = self.filename
 					var filepath = self.filepath
-					if(file_name == "null"||file_name ==""||file_name=="undefined"){
+					var filesize = self.filesize
+					if(file_name == null||file_name ==undefined||file_name=="undefined"){
 						file_name = "no file"
 						document.getElementById("processspan").style.display="none"
 //						document.getElementById("downloadfile").style.display ="none"
@@ -179,6 +180,7 @@
 					plus.io.resolveLocalFileSystemURL(file_path,function(entry){
 						document.getElementById("btn_area_open").style.display="block"
 					},function(e){
+						if(filepath!=""&&filepath!=null&&filepath!="undefined"&&filepath!=undefined)
 						document.getElementById("btn_area").style.display="block"
 					})
 					
@@ -189,8 +191,7 @@
 					inforshare_type.innerHTML=_inforshare_type
 					inforshare_editor_name.innerHTML=_inforshare_editor_name
 					inforshare_text.innerHTML=_inforshare_text
-					
-					file_to_download.innerHTML=file_name
+					file_to_download.innerHTML=file_name +"&nbsp;&nbsp;&nbsp;"+filesize+"M"
 					
 					//显示图片
 					if(_images_list !=""||_images_list !=null||_images_list !=undefined){
@@ -206,7 +207,6 @@
 						mui.previewImage();
 					}
 					}
-					
 					
 					//收藏操作
 					like_style = document.getElementById("like")

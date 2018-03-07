@@ -1,197 +1,197 @@
 {
-	"login.html": {
-		"refer": [
-			"register.html",
-			"main.html",
-			"login.html"
-		],
-		"resources": []
-	},
-	"main.html": {
-		"resources": [
-			"ptos/ptos_main.html",
-			"css/mui.min.css"
-		],
-		"refer": [
-			"inforshare/inforshare_main.html",
-			"ptos/ptos_main.html",
-			"selfInformation.html",
-			"selfinformation/selfInformation.html",
-			"login.html"
-		]
-	},
-	"selfInformation.html": {
-		"refer": [
-			"selfsetting/selfsetting.html",
-			"notice/notice.html",
-			"admin/manage_user.html"
-		],
-		"resources": []
-	},
-	"ptos/ptos_main.html": {
-		"refer": [
-			"ptos/ptos_search.html",
-			"ptos/ptos_add.html",
-			"ptos/ptos_detail.html",
-			"ptos/myptos.html",
-			"ptos/myanswerptos.html",
-			"ptos/like_base.html",
-			"ptos/ptos_add_all.html",
-			"ptos/ptos_detail_all.html",
-			"ptos/ptos_unfinished.html"
-		],
-		"resources": [
-			"css/iconfont.css",
-			"css/mui.min.css",
-			"css/icons-extra.css"
-		]
-	},
-	"admin/manage_user.html": {
-		"refer": [
-			"admin/users_list.html",
-			"admin/add_user.html"
-		],
-		"resources": []
-	},
-	"ptos/myanswerptos.html": {
-		"refer": [
-			"ptos/ptos_detail.html"
-		],
-		"resources": []
-	},
-	"ptos/ptos_search.html": {
-		"refer": [
-			"ptos/ptos_search_content.html"
-		],
-		"resources": []
-	},
-	"ptos/ptos_search_content.html": {
-		"refer": [
-			"ptos/ptos_detail.html",
-			"ptos/ptos_detail_all.html"
-		],
-		"resources": []
-	},
-	"ptos/myptos.html": {
-		"refer": [
-			"ptos/ptos_detail.html"
-		],
-		"resources": []
-	},
-	"selfsetting/selfsetting.html": {
-		"refer": [
-			"selfsetting/changepsw.html",
-			"selfsetting/about_ZhihuiSMB.html"
-		],
-		"resources": []
-	},
-	"inforshare/inforshare_main.html": {
-		"refer": [
-			"inforshare/add_inforshare.html",
-			"inforshare/infor_detail.html",
-			"inforshare/inforshare_list_base.html",
-			"inforshare/infor_search.html",
-			"inforshare/myinforshare.html",
-			"inforshare/like_base.html"
-		],
-		"resources": [
-			"css/iconfont.css",
-			"css/mui.min.css",
-			"css/icons-extra.css"
-		]
-	},
-	"inforshare/infor_search.html": {
-		"refer": [
-			"inforshare/infor_search_content.html"
-		],
-		"resources": []
-	},
-	"inforshare/infor_search_content.html": {
-		"refer": [
-			"inforshare/infor_detail.html"
-		],
-		"resources": []
-	},
-	"inforshare/inforshare_list_base.html": {
-		"resources": [
-			"inforshare/inforshare_list.html"
-		],
-		"refer": [
-			"inforshare/inforshare_list.html"
-		]
-	},
-	"inforshare/inforshare_list.html": {
-		"refer": [
-			"inforshare/infor_detail.html"
-		],
-		"resources": []
-	},
-	"inforshare/myinforshare.html": {
-		"refer": [
-			"inforshare/infor_detail.html"
-		],
-		"resources": []
-	},
-	"selfinformation/selfInformation.html": {
-		"refer": [
-			"selfsetting/selfsetting.html",
-			"selfinformation/feedback.html",
-			"analysis/analysis.html",
-			"admin/manage_user.html",
-			"selfinformation/camera.html",
-			"login.html"
-		],
-		"resources": [
-			"img/schaeffler02.png",
-			"css/app.css",
-			"css/mui.min.css"
-		]
-	},
-	"inforshare/like_base.html": {
-		"resources": [
-			"inforshare/like_list.html"
-		],
-		"refer": [
-			"inforshare/like_list.html"
-		]
-	},
-	"inforshare/like_list.html": {
-		"refer": [
-			"inforshare/infor_detail.html"
-		],
-		"resources": []
-	},
-	"ptos/like_base.html": {
-		"resources": [
-			"ptos/like_list.html"
-		],
-		"refer": [
-			"ptos/like_list.html"
-		]
-	},
-	"ptos/like_list.html": {
-		"refer": [
-			"ptos/ptos_detail.html",
-			"ptos/ptos_detail_all.html"
-		],
-		"resources": []
-	},
-	"ptos/ptos_unfinished.html": {
-		"refer": [
-			"ptos/ptos_detail_all.html"
-		],
-		"resources": []
-	},
-	"admin/users_list.html": {
-		"refer": [
-			"admin/user_search.html"
-		],
-		"resources": []
-	},
-	"selfinformation/camera.html": {
-		"refer": [
-			"selfinformation/camera_video.html"
-		],
-		"resources": []
-	}
+  "login.html": {
+    "refer": [
+      "register.html",
+      "main.html",
+      "login.html"
+    ],
+    "resources": []
+  },
+  "main.html": {
+    "resources": [
+      "ptos/ptos_main.html",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "inforshare/inforshare_main.html",
+      "ptos/ptos_main.html",
+      "selfInformation.html",
+      "selfinformation/selfInformation.html",
+      "login.html"
+    ]
+  },
+  "selfInformation.html": {
+    "refer": [
+      "selfsetting/selfsetting.html",
+      "notice/notice.html",
+      "admin/manage_user.html"
+    ],
+    "resources": []
+  },
+  "ptos/ptos_main.html": {
+    "refer": [
+      "ptos/ptos_search.html",
+      "ptos/ptos_add.html",
+      "ptos/ptos_detail.html",
+      "ptos/myptos.html",
+      "ptos/myanswerptos.html",
+      "ptos/like_base.html",
+      "ptos/ptos_add_all.html",
+      "ptos/ptos_detail_all.html",
+      "ptos/ptos_unfinished.html"
+    ],
+    "resources": [
+      "css/iconfont.css",
+      "css/mui.min.css",
+      "css/icons-extra.css"
+    ]
+  },
+  "admin/manage_user.html": {
+    "refer": [
+      "admin/users_list.html",
+      "admin/add_user.html"
+    ],
+    "resources": []
+  },
+  "ptos/myanswerptos.html": {
+    "refer": [
+      "ptos/ptos_detail.html"
+    ],
+    "resources": []
+  },
+  "ptos/ptos_search.html": {
+    "refer": [
+      "ptos/ptos_search_content.html"
+    ],
+    "resources": []
+  },
+  "ptos/ptos_search_content.html": {
+    "refer": [
+      "ptos/ptos_detail.html",
+      "ptos/ptos_detail_all.html"
+    ],
+    "resources": []
+  },
+  "ptos/myptos.html": {
+    "refer": [
+      "ptos/ptos_detail.html"
+    ],
+    "resources": []
+  },
+  "selfsetting/selfsetting.html": {
+    "refer": [
+      "selfsetting/changepsw.html",
+      "selfsetting/about_ZhihuiSMB.html"
+    ],
+    "resources": []
+  },
+  "inforshare/inforshare_main.html": {
+    "refer": [
+      "inforshare/add_inforshare.html",
+      "inforshare/infor_detail.html",
+      "inforshare/inforshare_list_base.html",
+      "inforshare/infor_search.html",
+      "inforshare/myinforshare.html",
+      "inforshare/like_base.html"
+    ],
+    "resources": [
+      "css/iconfont.css",
+      "css/mui.min.css",
+      "css/icons-extra.css"
+    ]
+  },
+  "inforshare/infor_search.html": {
+    "refer": [
+      "inforshare/infor_search_content.html"
+    ],
+    "resources": []
+  },
+  "inforshare/infor_search_content.html": {
+    "refer": [
+      "inforshare/infor_detail.html"
+    ],
+    "resources": []
+  },
+  "inforshare/inforshare_list_base.html": {
+    "resources": [
+      "inforshare/inforshare_list.html"
+    ],
+    "refer": [
+      "inforshare/inforshare_list.html"
+    ]
+  },
+  "inforshare/inforshare_list.html": {
+    "refer": [
+      "inforshare/infor_detail.html"
+    ],
+    "resources": []
+  },
+  "inforshare/myinforshare.html": {
+    "refer": [
+      "inforshare/infor_detail.html"
+    ],
+    "resources": []
+  },
+  "selfinformation/selfInformation.html": {
+    "refer": [
+      "selfsetting/selfsetting.html",
+      "selfinformation/feedback.html",
+      "analysis/analysis.html",
+      "admin/manage_user.html",
+      "selfinformation/camera.html",
+      "login.html"
+    ],
+    "resources": [
+      "img/schaeffler02.png",
+      "css/app.css",
+      "css/mui.min.css"
+    ]
+  },
+  "inforshare/like_base.html": {
+    "resources": [
+      "inforshare/like_list.html"
+    ],
+    "refer": [
+      "inforshare/like_list.html"
+    ]
+  },
+  "inforshare/like_list.html": {
+    "refer": [
+      "inforshare/infor_detail.html"
+    ],
+    "resources": []
+  },
+  "ptos/like_base.html": {
+    "resources": [
+      "ptos/like_list.html"
+    ],
+    "refer": [
+      "ptos/like_list.html"
+    ]
+  },
+  "ptos/like_list.html": {
+    "refer": [
+      "ptos/ptos_detail.html",
+      "ptos/ptos_detail_all.html"
+    ],
+    "resources": []
+  },
+  "ptos/ptos_unfinished.html": {
+    "refer": [
+      "ptos/ptos_detail_all.html"
+    ],
+    "resources": []
+  },
+  "admin/users_list.html": {
+    "refer": [
+      "admin/user_search.html"
+    ],
+    "resources": []
+  },
+  "selfinformation/camera.html": {
+    "refer": [
+      "selfinformation/camera_video.html"
+    ],
+    "resources": []
+  }
 }

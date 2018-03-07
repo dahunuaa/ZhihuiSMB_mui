@@ -201,6 +201,7 @@
 						li.setAttribute("images_list",value.images)
 						li.setAttribute("filename",value.filename);
 						li.setAttribute("filepath",value.filepath);
+						li.setAttribute("filesize",value.filesize);
 						if(unread_msg.indexOf(value._id)>=0){
 							li.innerHTML='<span class="unread"></span>'+"editor："+value.add_user_name +"<br>"+"add time："+value.last_updated_time+"<br>" +"title："+value.infor_title;
                          
@@ -224,6 +225,7 @@
 						var images_list = this.getAttribute("images_list")
 						var filename = this.getAttribute("filename")
 						var filepath = this.getAttribute("filepath")
+						var filesize = this.getAttribute("filesize")
 						var li_text = this.getAttribute("li_text")
 						mui.openWindow({
 					    url:"infor_detail.html",
@@ -240,6 +242,7 @@
 					    	images_list:images_list,
 					    	filename:filename,
 					    	filepath:filepath,
+					    	filesize:filesize,
 					    }
 					     
 						})

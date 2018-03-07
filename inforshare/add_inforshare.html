@@ -140,6 +140,7 @@
 							var wt  = plus.nativeUI.showWaiting("loading...");
 							if(file !=""&&file !=undefined){
 								origin_name=file.name
+								console.info()
 								$.ajax({
 								type:"post",
 								url:basepath+"api/v1.0/file/upload",
@@ -152,6 +153,7 @@
 								success:function(data){
 									window.filepath = data.response.data.file_path
 									window.filename = data.response.data.file_name
+									window.filesize = data.response.data.file_size
 								},
 								error:function(data){
 									plus.nativeUI.toast("file upload failed！");
@@ -170,6 +172,7 @@
 							"images_list":JSON.stringify(images_array),
 							"filename":window.filename,
 							"filepath":window.filepath,
+							"filesize":window.filesize,
 						},
 						async: false,
 						dataType:"json",//如果返回的是str，那么这个地方必须用text，用json报错
