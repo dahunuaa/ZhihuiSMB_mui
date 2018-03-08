@@ -118,10 +118,12 @@
 		
 		
 		document.getElementById("logoff").addEventListener('tap',function(){
+			plus.storage.clear();
 			mui.openWindow({
 				url:"../login.html",
 				id:"login"
 			})
+			
 //			plus.runtime.quit() 苹果版本无法使用该语句退出
 		})
 		
