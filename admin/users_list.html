@@ -3,15 +3,21 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>mynotice</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link href="../css/mui.min.css" rel="stylesheet" />
         <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+        <link rel="stylesheet" href="../css/iconfont.css" />
 		<style>
 			body {
 				background-color:#efeff4;
 			}
-			
+			/*#pullrefresh{
+		    	margin: -10px 0px 0px 0px;
+		    }*/
+		    
 		</style>
 
 	</head>
@@ -22,21 +28,32 @@
 			 <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">users_list</h1>
 		</header>
-		
-		<div class="mui-content" style="font-size: 16px;" >
-			<div align="center" style="background-color:#FAFAFA">
-				<a href="#user_search_pop"><input type="search" id="user_search" class="mui-icon mui-icon-search" placeholder="search users" style="width:250px;height:35px; background-color:#E8E8E8; margin-top: 10px;margin-bottom: 5px;"/></a>
-				<a id="icon-search"><span class="mui-icon mui-icon-search"></span></a>
-				<hr />
-			</div>
-		<div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top: -7px;" >
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper"  >
 			<div class="mui-scroll">
+			<div align="center" style="background-color:#FAFAFA">
+				<a href="#user_search_pop">
+				<input type="search" id="user_search" class="mui-icon mui-icon-search" placeholder="search users" style="width:250px;height:35px; background-color:#E8E8E8; margin-top: 10px;margin-bottom: 5px;"/></a>
+				<a id="icon-search"><span class="mui-icon mui-icon-search"></span></a>
+			</div>
 				<ul class="mui-table-view mui-table-view-chevron" id="list">
 					
 				</ul>
 			</div>
 		</div>
-		</div>
+		<!--<div class="mui-content" style="font-size: 16px;" >
+			<div align="center" style="background-color:#FAFAFA">
+				<a href="#user_search_pop"><input type="search" id="user_search" class="mui-icon mui-icon-search" placeholder="search users" style="width:250px;height:35px; background-color:#E8E8E8; margin-top: 10px;margin-bottom: 5px;"/></a>
+				<a id="icon-search"><span class="mui-icon mui-icon-search"></span></a>
+				<hr />
+			</div>
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top: -7px;" >
+				<div class="mui-scroll">
+					<ul class="mui-table-view mui-table-view-chevron" id="list">
+						
+					</ul>
+				</div>
+			</div>
+		</div>-->
 		<div id="user_search_pop" class="mui-popover">
 			<br />
 			<form class="mui-input-group">
