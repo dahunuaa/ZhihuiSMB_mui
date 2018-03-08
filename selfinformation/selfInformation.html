@@ -67,6 +67,11 @@
 						problems feedback
 					</a>
 				</li>
+				<div class="mui-table-view-cell" >
+					<a class="mui-navigate-right" id="scrapy">
+						enjoy your life
+					</a>
+				</div>
 				<div class="mui-table-view-cell" style="display: none;" id="user_manage">
 					<a class="mui-navigate-right" id="manage_user">
 						users management
@@ -118,7 +123,6 @@
 		
 		
 		document.getElementById("logoff").addEventListener('tap',function(){
-			plus.storage.clear();
 			mui.openWindow({
 				url:"../login.html",
 				id:"login"
@@ -139,6 +143,12 @@
 			mui.openWindow({
 				url:"feedback.html",
 				id:"feedback",
+			})
+		});
+		document.getElementById("scrapy").addEventListener('tap',function(){
+			mui.openWindow({
+				url:"scrapy.html",
+				id:"scrapy",
 			})
 		});
 		document.getElementById("analysis").addEventListener('tap',function(){

@@ -360,7 +360,10 @@
 					"analysis/analysis.html",
 					"admin/manage_user.html",
 					"selfinformation/camera.html",
-					"login.html"
+					"login.html",
+					"main.html",
+					"selfinformation/scrapy.html",
+					"selfinformation/scrapy1.html"
 				],
 				"priority": 0
 			},
@@ -411,6 +414,13 @@
 				"resources": [],
 				"refer": [
 					"selfinformation/camera_video.html"
+				],
+				"priority": 0
+			},
+			"selfinformation/scrapy.html": {
+				"resources": [],
+				"refer": [
+					"selfinformation/detail_news.html"
 				],
 				"priority": 0
 			}
