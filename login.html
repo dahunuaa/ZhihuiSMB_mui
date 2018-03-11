@@ -68,8 +68,8 @@
 			<button id="login" class="mui-btn mui-btn-block mui-btn-primary">sign in</button>
 			</div>
 		</div>
-		<!--<br />
-		<div align="center" style="color:#0062CC;" id="register">sign up</div>-->
+		<br />
+		<div align="center" style="color:#0062CC;" id="register">sign up</div>
 		<br />
     <div align="center" ><font size="1"> ALL RIGHT RESERVED @ZhihuiSMB</font></div>
 	</div>
@@ -153,12 +153,12 @@
 						$.trigger(loginButton, 'tap');
 					});
 					
-//					document.getElementById("register").addEventListener('tap',function(){
-//						mui.openWindow({
-//							url:'register.html',
-//							id:'register'
-//						})
-//					})
+					document.getElementById("register").addEventListener('tap',function(){
+						mui.openWindow({
+							url:'register.html',
+							id:'register'
+						})
+					})
 
 //			按返回键直接返回到手机页面
 			$.back = function(event) {

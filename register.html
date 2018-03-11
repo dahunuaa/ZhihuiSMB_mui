@@ -44,9 +44,18 @@
 					<!--<label class="mui-btn mui-btn-primary" type="button" onclick="return true;" style="width: 100px;">发送验证码</label>-->
 				</div>
 				<div class="mui-input-row">
+					<label>email</label>
+					<input id="email" type="text" class="mui-input-clear" placeholder="enter email" />
+				</div>
+				<div class="mui-input-row">
 					<label>password</label>
 					<input id="psw" type="text" class="mui-input-clear" placeholder="enter password" />
 				</div>
+				<li class="mui-table-view-cell">
+					<a id="selectgroup" class="mui-navigate-right">
+						group<span id="group"style="padding: 0px 0px 0px 80px;" ></span>
+					</a>
+				</li>
 			</form>
 			<div class="mui-button-row">
 					<button id="submit" class="mui-btn mui-btn-primary" type="button" onclick="return true;">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -69,7 +78,36 @@
 					var name=document.getElementById("name");
 					var psw= document.getElementById("psw");
 					var mobile = document.getElementById("mobile");
+					var email = document.getElementById("email");
 					
+					//选择组别工种
+					var _user_group = new $.PopPicker();
+					_user_group.setData([{
+						value: 'ZSA1',
+						text: 'ZSA1'
+					},{
+						value: 'ZSA2',
+						text: 'ZSA2',
+					},{
+						value: 'ZSA3',
+						text: 'ZSA3'
+					},{
+						value: 'ZSA4',
+						text: 'ZSA4'
+					},{
+						value: 'others',
+						text: 'others'
+					}]);
+					var showUsergroupnPickerButton = doc.getElementById('selectgroup');
+					var u_group = doc.getElementById('group');
+					u_group.innerText = "ZSA1";
+					showUsergroupnPickerButton.addEventListener('tap', function(event) {
+						_user_group.show(function(items) {
+							u_group.innerText = items[0].text;
+							//返回 false 可以阻止选择框的关闭
+//							return false;
+						});
+					}, false);
 					
 					
 					document.getElementById("submit").addEventListener('tap',function(){
@@ -79,8 +117,12 @@
 							plus.nativeUI.toast("enter name")
 						}else if(mobile.value==""){
 							plus.nativeUI.toast("enter mobile")
+						}else if(email.value==""){
+							plus.nativeUI.toast("enter email")
 						}else if(psw.value==""){
 							plus.nativeUI.toast("enter password")
+						}else if(u_group.innerText==""){
+							plus.nativeUI.toast("select user group")
 						}else{
 						mobile_result =validatemobile(mobile.value)
 						if(mobile_result!=false){
@@ -93,7 +135,9 @@
 								"name":name.value,
 								"scope":"normal",
 								"mobile":mobile.value,
+								"email":email.value,
 								"position":"designer",
+								"group":u_group.innerText,
 							},
 							dataType:"json",
 							async:"true",

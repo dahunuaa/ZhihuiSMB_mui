@@ -2,13 +2,13 @@
        { 
            if(mobile.length==0) 
            { 
-              alert('请输入手机号码！'); 
+              alert('please enter mobile number！'); 
               document.getElementById("mobile").focus(); 
               return false; 
            }     
            if(mobile.length!=11) 
            { 
-               alert('请输入有效的手机号码！'); 
+               alert('mobile number illegal！'); 
                document.getElementById("mobile").focus(); 
                return false; 
            } 

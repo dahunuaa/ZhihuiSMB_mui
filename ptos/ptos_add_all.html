@@ -227,7 +227,7 @@
 						}else{
 							var wt  = plus.nativeUI.showWaiting("loading...");
 							getimgbase64();
-							
+							console.info(JSON.stringify(images_array))
 							$.ajax({
 							type: "post",
 							url: basepath+"api/v1.0/ptos",

@@ -76,7 +76,7 @@
 		
 		<div class="mui-content" >
         <h3 style="text-align:center"></h3>    
-        <span >feedback title:</span>&nbsp;&nbsp;&nbsp;<span id="title"></span>
+        <span >title:</span>&nbsp;&nbsp;&nbsp;<span id="title"></span>
         <br>
         <span >author:</span>&nbsp;&nbsp;&nbsp;<span id="author"></span>
         <br>
@@ -376,9 +376,11 @@
 					
 					if(_ptos_result!="unfinished"){
 						document.getElementById("pto_result_isok").style.display="block"
+						document.getElementById("comment_btn").style.display="none"
+						
 					}else{
 						
-						
+						//判断ptos评价需不需要显示
 						mui.ajax({
 							type:"get",
 							url:basepath+"api/v1.0/comment?access_token="+localStorage.getItem('token')+"&comment_type=ptos&text_id="+_ptos_id+"&comment_status=father",
@@ -492,6 +494,7 @@
 								async:true,
 								dataType:"json",
 								success:function(data){
+									console.info(JSON.stringify(data.response))
 									if(data.response.success == "1"){
 										plus.nativeUI.toast("like")
 									}else{

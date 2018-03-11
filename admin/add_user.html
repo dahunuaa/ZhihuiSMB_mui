@@ -43,6 +43,10 @@
 					<input id="mobile" type="text" class="mui-input-clear" placeholder="enter user telephone" />
 				</div>
 				<div class="mui-input-row">
+					<label>email</label>
+					<input id="email" type="text" class="mui-input-clear" placeholder="enter email" />
+				</div>
+				<div class="mui-input-row">
 					<label>init password</label>
 					<input id="psw" type="text" class="mui-input-clear" placeholder="enter init password" />
 				</div>
@@ -128,7 +132,7 @@
 					var psw= document.getElementById("psw");
 					var mobile = document.getElementById("mobile");
 					var scope = document.getElementById("usertype")
-					
+					var email = document.getElementById("email");
 					
 					document.getElementById("submit").addEventListener('tap',function(){
 						if(scope.innerHTML == "normal"){
@@ -142,6 +146,8 @@
 							plus.nativeUI.toast("enter user name")
 						}else if(mobile.value==""){
 							plus.nativeUI.toast("enter user tel")
+						}else if(email.value==""){
+							plus.nativeUI.toast("enter email")
 						}else if(psw.value==""){
 							plus.nativeUI.toast("enter password")
 						}else if(scope.innerText==""){
@@ -158,6 +164,7 @@
 								"name":name.value,
 								"scope":user_scope,
 								"mobile":mobile.value,
+								"email":email.value,
 								"group":u_group.innerText,
 							},
 							dataType:"json",

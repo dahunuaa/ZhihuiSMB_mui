@@ -72,12 +72,12 @@
 		fileInput.addEventListener('tap', function(event) {
 				if(mui.os.plus){
 					var a = [{
-						title: "拍照"
+						title: "take photo"
 					}, {
-						title: "从手机相册选择"
+						title: "select from album"
 					}];
 					plus.nativeUI.actionSheet({
-						cancel: "取消",
+						cancel: "cancel",
 						buttons: a
 					}, function(b) {
 						switch (b.index) {
@@ -181,7 +181,7 @@
 	function getimgbase64(){
 		//判断网络连接
 		if(plus.networkinfo.getCurrentType()==plus.networkinfo.CONNECTION_NONE){
-			return mui.toast("网不太好哎，待会儿再写吧");
+			return mui.toast("server  error");
 		}
 		
 		picture.send(mui.extend({}, picture.deviceInfo, {
@@ -191,6 +191,7 @@
 	
 	
 	var images_array=new Array();
+	
 	picture.send = function(content){
 		    	for(var i=0;i<content.images.length;i++){
 					var path = content.images[i]["path"];
@@ -201,14 +202,14 @@
 						var w = that.width,
 							h = that.height,
 							scale = w/h;
-							w = 480 ||w;
+							w = 960 ||w;
 							h = w/scale;
 						var canvas = document.createElement('canvas');
 						var ctx = canvas.getContext('2d');
 						canvas.width = w;
 			    		canvas.height = h;
 						ctx.drawImage(that,0,0,w,h);
-						var base64 = canvas.toDataURL('image/png',1||0.8);
+						var base64 = canvas.toDataURL('image/png',1||1);
 						images_array.push(base64.split(',')[1])
 //					}
 				}
