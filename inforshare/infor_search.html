@@ -29,6 +29,10 @@
 		<div class="mui-content">
 			<form class="mui-input-group">
 				<div class="mui-input-row">
+					<label>editor</label>
+					<input id="editor" type="text" class="mui-input-clear" placeholder="enter editor">
+				</div>
+				<div class="mui-input-row">
 					<label>title</label>
 					<input id="title" type="text" class="mui-input-clear" placeholder="enter key words">
 				</div>
@@ -84,13 +88,14 @@
 //							return false;
 						});
 					}, false);
-
+					
+					var editorBox = doc.getElementById("editor")
 					var titleBox = doc.getElementById("title")
 					var categoryBox = doc.getElementById("category")
 					var contentBox = doc.getElementById("textarea")
 					searchButton = doc.getElementById("search_btn")
 					searchButton.addEventListener('tap',function(event){
-						if (titleBox.value ==""&categoryBox.innerText==""&contentBox.value==""){
+						if (titleBox.value ==""&categoryBox.innerText==""&contentBox.value==""&editorBox.value==""){
 							plus.nativeUI.toast("enter search condition")
 						}else{
 							mui.openWindow({
@@ -98,6 +103,7 @@
 								id:"infor_search_content",
 								
 								extras:{
+									editor:editorBox.value,
 									title:titleBox.value,
 									category:categoryBox.innerText,
 									content:contentBox.value,

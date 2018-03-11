@@ -65,6 +65,7 @@
 			});
 			
 			var self = plus.webview.currentWebview();
+			var editor = self.editor;
 			var title = self.title;
 			var content = self.content;
 			var category = self.category;
@@ -79,7 +80,7 @@
 					
 					mui.ajax({
 					type: "get",//后面必须加逗号！！！！！！！！
-					url: basepath+"api/v1.0/inforshare?access_token="+localStorage.getItem("token")+"&page_size=10&page="+(count+1)+"&infor_type^="+category+"&infor_title^="+title+"&infor_text^="+content,
+					url: basepath+"api/v1.0/inforshare?access_token="+localStorage.getItem("token")+"&page_size=10&page="+(count+1)+"&infor_type^="+category+"&add_user_name^="+editor+"&infor_title^="+title+"&infor_text^="+content,
 					async:true,
 					dataType:"json",
 					success:function(data){

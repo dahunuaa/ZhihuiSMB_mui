@@ -94,6 +94,7 @@
 						}
 					});
 			var self = plus.webview.currentWebview();
+			var editor = self.editor;
 			var title = self.title;
 			var content = self.content;
 			var category = self.category;
@@ -109,7 +110,7 @@
 						$.ajax({
 						type: "get",
 						url:basepath+"api/v1.0/ptos?access_token="+localStorage.getItem("token")+"&page_size=15&page="+(count+1)
-							+"&title^="+title+"&to_name="+to_name+"&category="+category+"&context^="+content,
+							+"&add_user_name^="+editor+"&title^="+title+"&to_name="+to_name+"&category="+category+"&context^="+content,
 						async: true,
 						dataType:"json",
 						success: function(data) {
